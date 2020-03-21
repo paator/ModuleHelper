@@ -13,10 +13,11 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="292" Width="436">
     <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
-        </materialDesign:Card>
+        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="32"/>
+        <ComboBox HorizontalAlignment="Left" Margin="47,10,0,0" VerticalAlignment="Top" Width="32"/>
+        <ComboBox HorizontalAlignment="Left" Margin="84,10,0,0" VerticalAlignment="Top" Width="32"/>
+        <ComboBox HorizontalAlignment="Left" Margin="121,10,0,0" VerticalAlignment="Top" Width="32"/>
     </Grid>
 </Window>
