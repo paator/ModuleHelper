@@ -15,9 +15,27 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="292" Width="436">
     <Grid>
-        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="32"/>
-        <ComboBox HorizontalAlignment="Left" Margin="47,10,0,0" VerticalAlignment="Top" Width="32"/>
-        <ComboBox HorizontalAlignment="Left" Margin="84,10,0,0" VerticalAlignment="Top" Width="32"/>
-        <ComboBox HorizontalAlignment="Left" Margin="121,10,0,0" VerticalAlignment="Top" Width="32"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="1" Content="Musical scale:" FontSize="16"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=MusicalScales}" SelectedItem="{Binding Path=CurrentMusicalScale}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </Grid>
 </Window>
