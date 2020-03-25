@@ -14,5 +14,7 @@
         A,
         Asharp,
         B
+
+        //we have 11 notes, where 12th note -> C in higher octave
     }
 }

@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 using ModuleHelper.Models;
 
 namespace ModuleHelper.ViewModels
@@ -10,33 +15,12 @@ namespace ModuleHelper.ViewModels
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private MusicalScaleModel _currentMusicalScale;
 
+        public Array Notes { get => Enum.GetValues(typeof(Note)); }
+
         public MainWindowViewModel()
         {
-            _musicalScales = new ObservableCollection<MusicalScaleModel>();
-
-            var musicalScale1 = new MusicalScaleModel
-            {
-                Name = "Pentatonic",
-                MainKey = Note.E
-            };
-
-            var musicalScale2 = new MusicalScaleModel
-            {
-                Name = "Minor Harmonic",
-                MainKey = Note.Asharp
-            };
-
-            var musicalScale3 = new MusicalScaleModel
-            {
-                Name = "Major",
-                MainKey = Note.C
-            };
-
-            _musicalScales.Add(musicalScale1);
-            _musicalScales.Add(musicalScale2);
-            _musicalScales.Add(musicalScale3);
+            LoadScalesFromXml();
         }
-
 
         public ObservableCollection<MusicalScaleModel> MusicalScales
         {
@@ -79,16 +63,34 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        public Note CurrentMusicalMainKey
+        public void LoadScalesFromXml()
         {
-            get => _currentMusicalScale.MainKey;
-            set
+            XmlDocument document = new XmlDocument();
+            document.Load("musicalscales.xml");
+
+            XmlNodeList nodes = document.DocumentElement.SelectNodes("/MusicalScales/MusicalScale");
+
+            _musicalScales = new ObservableCollection<MusicalScaleModel>();
+
+            foreach(XmlNode node in nodes)
             {
-                if (_currentMusicalScale.MainKey != value)
+                //create new musicalscale of name set in xml node attribute
+                var musicalScale = new MusicalScaleModel
                 {
-                    _currentMusicalScale.MainKey = value;
-                    OnPropertyChange("CurrentMusicalMainKey");
+                    Name = node.Attributes[0].Value,
+                    Notes = new ObservableCollection<Note>()
+                };
+
+                //fill musical scale with notes from xml file
+                var musicalNotes = node.SelectNodes("/Notes/Note");
+
+                foreach(XmlNode note in musicalNotes)
+                {
+                    var musicalScaleNote = note.SelectSingleNode("Note").InnerText;
+
+                    musicalScale.Notes.Add((Note) Enum.Parse(typeof(Note), musicalScaleNote));
                 }
+                MusicalScales.Add(musicalScale);
             }
         }
 

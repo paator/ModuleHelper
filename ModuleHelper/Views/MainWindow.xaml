@@ -19,23 +19,38 @@
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
+        <!-- Musical Scale Text Label Definition -->
         <Label Grid.Row="1" Grid.Column="1" Content="Musical scale:" FontSize="16"/>
-        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=MusicalScales}" SelectedItem="{Binding Path=CurrentMusicalScale}">
+
+        <!-- Musical Scale Picker -->
+        <ComboBox Grid.Row="1" 
+                  Grid.Column="2" 
+                  ItemsSource="{Binding MusicalScales}" 
+                  SelectedItem="{Binding CurrentMusicalScale}"
+                  Margin="20,0,20,0">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+
+        <!-- Main Note picker (using Enum) -->
+        <ComboBox Grid.Row="1" 
+                  Grid.Column="3" 
+                  ItemsSource="{Binding Notes}"
+                  Margin="20,0,20,0">
+        </ComboBox>
+        
     </Grid>
 </Window>
