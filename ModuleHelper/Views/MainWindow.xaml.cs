@@ -24,7 +24,6 @@ namespace ModuleHelper.Views
         public MainWindow()
         {
             DataContext = new MainWindowViewModel();
-            ConsoleAllocator.ShowConsoleWindow();
             InitializeComponent();
         }
     }

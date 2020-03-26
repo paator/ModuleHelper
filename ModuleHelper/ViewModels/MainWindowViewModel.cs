@@ -19,7 +19,7 @@ namespace ModuleHelper.ViewModels
 
         public MainWindowViewModel()
         {
-            LoadScalesFromXml();
+            LoadScalesFromXml("musicalscales.xml");
         }
 
         public ObservableCollection<MusicalScaleModel> MusicalScales
@@ -63,10 +63,11 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        public void LoadScalesFromXml()
+        public void LoadScalesFromXml(string filePath)
         {
             XmlDocument document = new XmlDocument();
-            document.Load("musicalscales.xml");
+
+            document.Load(filePath);
 
             XmlNodeList nodes = document.DocumentElement.SelectNodes("/MusicalScales/MusicalScale");
 
@@ -84,7 +85,7 @@ namespace ModuleHelper.ViewModels
                 //fill musical scale with notes from xml file
                 var musicalNotes = node.SelectNodes("/Notes/Note");
 
-                foreach(XmlNode note in musicalNotes)
+                foreach (XmlNode note in musicalNotes)
                 {
                     var musicalScaleNote = note.SelectSingleNode("Note").InnerText;
 
