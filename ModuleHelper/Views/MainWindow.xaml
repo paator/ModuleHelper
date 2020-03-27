@@ -51,6 +51,10 @@
                   ItemsSource="{Binding Notes}"
                   Margin="20,0,20,0">
         </ComboBox>
-        
+
+        <Label Grid.Row="2" Grid.Column="1" Content="Notes in selected scale:" FontSize="16"/>
+
+        <ListView Grid.Row="2" Grid.Column="2" ItemsSource="{Binding CurrentMusicalScaleNotes}"/>
+
     </Grid>
 </Window>

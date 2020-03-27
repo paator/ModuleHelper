@@ -19,6 +19,14 @@ namespace ModuleHelper.ViewModels
 
         public MainWindowViewModel()
         {
+            _musicalScales = new ObservableCollection<MusicalScaleModel>();
+
+            _currentMusicalScale = new MusicalScaleModel
+            {
+                Name = "",
+                Notes = new ObservableCollection<Note>()
+            };
+
             LoadScalesFromXml("musicalscales.xml");
         }
 
@@ -63,6 +71,19 @@ namespace ModuleHelper.ViewModels
             }
         }
 
+        public ObservableCollection<Note> CurrentMusicalScaleNotes
+        {
+            get => _currentMusicalScale.Notes;
+            set
+            {
+                if(_currentMusicalScale.Notes != value)
+                {
+                    _currentMusicalScale.Notes = value;
+                    OnPropertyChange("CurrentMusicalScaleNotes");
+                }
+            }
+        }
+
         public void LoadScalesFromXml(string filePath)
         {
             XmlDocument document = new XmlDocument();
@@ -78,19 +99,21 @@ namespace ModuleHelper.ViewModels
                 //create new musicalscale of name set in xml node attribute
                 var musicalScale = new MusicalScaleModel
                 {
-                    Name = node.Attributes[0].Value,
+                    Name = node.Attributes["name"].Value,
                     Notes = new ObservableCollection<Note>()
                 };
 
                 //fill musical scale with notes from xml file
-                var musicalNotes = node.SelectNodes("/Notes/Note");
+                var musicalNotesOfScale = node.ChildNodes;
 
-                foreach (XmlNode note in musicalNotes)
+                foreach (XmlNode note in musicalNotesOfScale)
                 {
-                    var musicalScaleNote = note.SelectSingleNode("Note").InnerText;
+                    var musicalScaleNote = note.InnerText;
+                    var parsedNoteValue = (Note) Enum.Parse(typeof(Note), musicalScaleNote);
 
-                    musicalScale.Notes.Add((Note) Enum.Parse(typeof(Note), musicalScaleNote));
+                    musicalScale.Notes.Add(parsedNoteValue);
                 }
+
                 MusicalScales.Add(musicalScale);
             }
         }
