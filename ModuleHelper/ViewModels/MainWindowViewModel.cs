@@ -14,6 +14,7 @@ namespace ModuleHelper.ViewModels
     {
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private MusicalScaleModel _currentMusicalScale;
+        private Note _currentNote;
 
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
 
@@ -23,7 +24,7 @@ namespace ModuleHelper.ViewModels
 
             _currentMusicalScale = new MusicalScaleModel
             {
-                Name = "",
+                Name = "Please select a Musical Scale",
                 Notes = new ObservableCollection<Note>()
             };
 
@@ -53,7 +54,11 @@ namespace ModuleHelper.ViewModels
                 if(_currentMusicalScale != value)
                 {
                     _currentMusicalScale = value;
+
+                    //I update current scale's name and notes as well
                     OnPropertyChange("CurrentMusicalScale");
+                    OnPropertyChange("CurrentMusicalScaleName");
+                    OnPropertyChange("CurrentMusicalScaleNotes");
                 }
             }
         }
@@ -80,6 +85,19 @@ namespace ModuleHelper.ViewModels
                 {
                     _currentMusicalScale.Notes = value;
                     OnPropertyChange("CurrentMusicalScaleNotes");
+                }
+            }
+        }
+
+        public Note CurrentNote
+        {
+            get => _currentNote;
+            set
+            {
+                if(_currentNote != value)
+                {
+                    _currentNote = value;
+                    OnPropertyChange("CurrentNote");
                 }
             }
         }

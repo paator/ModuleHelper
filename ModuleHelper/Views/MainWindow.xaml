@@ -25,6 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -36,7 +37,7 @@
         <ComboBox Grid.Row="1" 
                   Grid.Column="2" 
                   ItemsSource="{Binding MusicalScales}" 
-                  SelectedItem="{Binding CurrentMusicalScale}"
+                  SelectedItem="{Binding CurrentMusicalScale, Mode=TwoWay}"
                   Margin="20,0,20,0">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -52,9 +53,11 @@
                   Margin="20,0,20,0">
         </ComboBox>
 
+        <!-- Notes In Scale Text Label Definition -->
         <Label Grid.Row="2" Grid.Column="1" Content="Notes in selected scale:" FontSize="16"/>
 
-        <ListView Grid.Row="2" Grid.Column="2" ItemsSource="{Binding CurrentMusicalScaleNotes}"/>
+        <!-- List View of every musical note in selected scale -->
+        <ListView Grid.Row="3" Grid.Column="1" ItemsSource="{Binding CurrentMusicalScaleNotes}"/>
 
     </Grid>
 </Window>
