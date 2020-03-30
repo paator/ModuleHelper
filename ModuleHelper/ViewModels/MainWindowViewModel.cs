@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml;
-using System.Xml.Serialization;
 using ModuleHelper.Models;
 
 namespace ModuleHelper.ViewModels
@@ -24,7 +24,7 @@ namespace ModuleHelper.ViewModels
 
             _currentMusicalScale = new MusicalScaleModel
             {
-                Name = "Please select a Musical Scale",
+                Name = default,
                 Notes = new ObservableCollection<Note>()
             };
 
@@ -56,6 +56,7 @@ namespace ModuleHelper.ViewModels
                     _currentMusicalScale = value;
 
                     //I update current scale's name and notes as well
+                    //so these properties can be shown in view
                     OnPropertyChange("CurrentMusicalScale");
                     OnPropertyChange("CurrentMusicalScaleName");
                     OnPropertyChange("CurrentMusicalScaleNotes");
@@ -97,6 +98,7 @@ namespace ModuleHelper.ViewModels
                 if(_currentNote != value)
                 {
                     _currentNote = value;
+                    ChangeNotesRelativeToKey(_currentNote);
                     OnPropertyChange("CurrentNote");
                 }
             }
@@ -133,6 +135,18 @@ namespace ModuleHelper.ViewModels
                 }
 
                 MusicalScales.Add(musicalScale);
+            }
+        }
+
+        public void ChangeNotesRelativeToKey(Note previousNote)
+        {
+            for(var i = 0; i < CurrentMusicalScaleNotes.Count; i++)
+            {
+                var currentNoteIndex = (int)CurrentNote;
+                var previousNoteIndex = (int)previousNote;
+                var offset = previousNoteIndex - CurrentNote;
+                CurrentMusicalScaleNotes[i].Next(offset); //todo: fix moving every note by offset
+                //if note = 12 -> c
             }
         }
 
