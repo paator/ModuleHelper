@@ -155,18 +155,33 @@ namespace ModuleHelper.ViewModels
             //we calculate offset to know how to move every note in our musical scale
             //based on currently selected note
             var offset = selectedNoteIndex - previouslySelectedNoteIndex;
+
+            if (offset == 0) return;
             
             for (var i = 0; i < CurrentMusicalScaleNotes.Count; i++)
             {
                 var currentMusicalScaleNoteValue = (int)CurrentMusicalScaleNotes[i];
-                var newNoteIntValue = currentMusicalScaleNoteValue + offset;
+                int newNoteIntValue;
+
+                newNoteIntValue = currentMusicalScaleNoteValue + offset;
 
                 //12 -> back to C note, just higher octave
-                newNoteIntValue %= 12;
+                newNoteIntValue = Modulo(newNoteIntValue, 12);
 
                 Note newNote = (Note)(newNoteIntValue);
                 CurrentMusicalScaleNotes[i] = newNote;
             }
+        }
+
+        /// <summary>
+        /// A simple modulo division implementation.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="m"></param>
+        /// <returns>x mod m</returns>
+        private int Modulo(int x, int m)
+        {
+            return (x % m + m) % m;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
