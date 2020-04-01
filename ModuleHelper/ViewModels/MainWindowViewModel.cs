@@ -55,8 +55,10 @@ namespace ModuleHelper.ViewModels
                 {
                     _currentMusicalScale = value;
 
+                    //fixing position of keys relative to main key when we select new scale
+                    ChangeNotesRelativeToKey(CurrentMusicalScaleNotes[0]); 
+
                     //I update current scale's name and notes as well
-                    //so these properties can be shown in view
                     OnPropertyChange("CurrentMusicalScale");
                     OnPropertyChange("CurrentMusicalScaleName");
                     OnPropertyChange("CurrentMusicalScaleNotes");
@@ -85,7 +87,7 @@ namespace ModuleHelper.ViewModels
                 if(_currentMusicalScale.Notes != value)
                 {
                     _currentMusicalScale.Notes = value;
-                    OnPropertyChange("CurrentMusicalScaleNotes");
+                    OnPropertyChange("CurrentMusicalScaleNotes"); 
                 }
             }
         }
@@ -166,15 +168,16 @@ namespace ModuleHelper.ViewModels
                 newNoteIntValue = currentMusicalScaleNoteValue + offset;
 
                 //12 -> back to C note, just higher octave
+                //0 -> back to B note, just lower octave
                 newNoteIntValue = Modulo(newNoteIntValue, 12);
 
-                Note newNote = (Note)(newNoteIntValue);
+                Note newNote = (Note)newNoteIntValue;
                 CurrentMusicalScaleNotes[i] = newNote;
             }
         }
 
         /// <summary>
-        /// A simple modulo division implementation.
+        /// A simple modulo division implementation
         /// </summary>
         /// <param name="x"></param>
         /// <param name="m"></param>
