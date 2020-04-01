@@ -97,13 +97,18 @@ namespace ModuleHelper.ViewModels
             {
                 if(_currentNote != value)
                 {
+                    var previouslySelectedNote = _currentNote;
                     _currentNote = value;
-                    ChangeNotesRelativeToKey(_currentNote);
+                    ChangeNotesRelativeToKey(previouslySelectedNote);
                     OnPropertyChange("CurrentNote");
                 }
             }
         }
 
+        /// <summary>
+        /// Reads xml file containing defined musical scales.
+        /// </summary>
+        /// <param name="filePath"></param>
         public void LoadScalesFromXml(string filePath)
         {
             XmlDocument document = new XmlDocument();
@@ -138,15 +143,29 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        public void ChangeNotesRelativeToKey(Note previousNote)
+        /// <summary>
+        /// Moves all notes in currently selected scale relatively to currently selected key note.
+        /// </summary>
+        /// <param name="previouslySelectedNote"></param>
+        public void ChangeNotesRelativeToKey(Note previouslySelectedNote)
         {
-            for(var i = 0; i < CurrentMusicalScaleNotes.Count; i++)
+            var selectedNoteIndex = (int)CurrentNote;
+            var previouslySelectedNoteIndex = (int)previouslySelectedNote;
+
+            //we calculate offset to know how to move every note in our musical scale
+            //based on currently selected note
+            var offset = selectedNoteIndex - previouslySelectedNoteIndex;
+            
+            for (var i = 0; i < CurrentMusicalScaleNotes.Count; i++)
             {
-                var currentNoteIndex = (int)CurrentNote;
-                var previousNoteIndex = (int)previousNote;
-                var offset = previousNoteIndex - CurrentNote;
-                CurrentMusicalScaleNotes[i].Next(offset); //todo: fix moving every note by offset
-                //if note = 12 -> c
+                var currentMusicalScaleNoteValue = (int)CurrentMusicalScaleNotes[i];
+                var newNoteIntValue = currentMusicalScaleNoteValue + offset;
+
+                //12 -> back to C note, just higher octave
+                newNoteIntValue %= 12;
+
+                Note newNote = (Note)(newNoteIntValue);
+                CurrentMusicalScaleNotes[i] = newNote;
             }
         }
 
