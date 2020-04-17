@@ -8,12 +8,31 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
+        TextElement.FontSize="16"
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="400" Width="600">
+        Title="MainWindow" Height="400" Width="658">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="WhitePianoKey">
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFE6E6E6"/>
+            <Setter Property="Margin" Value="2,0"/>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="BlackPianoKey">
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Background" Value="#FF4B4B4B"/>
+            <Setter Property="BorderBrush" Value="#FF404040"/>
+            <Setter Property="Margin" Value="-999,0"/>
+            <Setter Property="Canvas.ZIndex" Value="1"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -27,19 +46,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
         <!-- Musical Scale Text Label Definition -->
-        <Label Grid.Row="1" Grid.Column="1" Content="Musical scale:" FontSize="16"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="Musical scale:"/>
 
         <!-- Musical Scale Picker -->
         <ComboBox Grid.Row="1" 
                   Grid.Column="2" 
                   ItemsSource="{Binding MusicalScales}" 
                   SelectedItem="{Binding CurrentMusicalScale, Mode=TwoWay}"
-                  Margin="20,0,20,0">
+                  Margin="20,0">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>
@@ -52,26 +72,56 @@
                   Grid.Column="3" 
                   ItemsSource="{Binding Notes}"
                   SelectedItem="{Binding CurrentNote, Mode=TwoWay}"
-                  Margin="20,0,20,0">
+                  Margin="20,0">
         </ComboBox>
 
         <!-- Notes in scale text label definition -->
-        <Label Grid.Row="2" Grid.Column="1" Content="Notes in selected scale:" FontSize="16"/>
+        <Label Grid.Row="2" Grid.Column="1" Content="Notes in selected scale:"/>
 
         <!-- List View of every musical note in selected scale -->
         <ListView Grid.Row="2" 
                   Grid.Column="2" 
                   Grid.ColumnSpan="3" 
                   ItemsSource="{Binding CurrentMusicalScaleNotes}"
-                  Margin="20,0,20,0">
+                  Margin="20,0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListView>
-        
-        
-        
+
+        <!-- Create a chord text label definition -->
+        <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="Create a chord using piano keyboard:"/>
+
+        <!-- Piano used for chord selection-->
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
+            <!-- Octave 1 -->
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <!-- Octave 2 -->
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+            <Button Style="{StaticResource BlackPianoKey}"/>
+            <Button Style="{StaticResource WhitePianoKey}"/>
+        </StackPanel>
     </Grid>
 </Window>
