@@ -97,7 +97,7 @@
         <!-- Piano used for chord selection-->
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
             <!-- Octave 1 -->
-            <Button Style="{StaticResource WhitePianoKey}" Content="C"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="C" Command="{Binding WhitePianoCommand}"/>
             <Button Style="{StaticResource BlackPianoKey}" Content="C#"/>
             <Button Style="{StaticResource WhitePianoKey}" Content="D"/>
             <Button Style="{StaticResource BlackPianoKey}" Content="D#"/>

@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using ModuleHelper.Models;
+using System.Windows;
+using System.Windows.Input;
 
 namespace ModuleHelper.ViewModels
 {
@@ -15,6 +17,7 @@ namespace ModuleHelper.ViewModels
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
+        private ICommand _whitePianoCommand;
 
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
 
@@ -29,6 +32,27 @@ namespace ModuleHelper.ViewModels
             };
 
             LoadScalesFromXml("musicalscales.xml");
+        }
+
+        public ICommand WhitePianoCommand
+        {
+            get
+            {
+                if (_whitePianoCommand == null)
+                {
+                    _whitePianoCommand = new RelayCommand(o =>
+                    {
+                        MessageBox.Show("Added successfully", "Alert", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    });
+                }
+
+                return _whitePianoCommand;
+            }
+
+            set
+            {
+                _whitePianoCommand = value;
+            }
         }
 
         public ObservableCollection<MusicalScaleModel> MusicalScales
