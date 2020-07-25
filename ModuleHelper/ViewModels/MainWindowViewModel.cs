@@ -9,6 +9,7 @@ using System.Xml;
 using ModuleHelper.Models;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace ModuleHelper.ViewModels
 {
@@ -17,7 +18,7 @@ namespace ModuleHelper.ViewModels
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
-        private ICommand _whitePianoCommand;
+        private ICommand _pianoCommand;
 
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
 
@@ -34,24 +35,32 @@ namespace ModuleHelper.ViewModels
             LoadScalesFromXml("musicalscales.xml");
         }
 
-        public ICommand WhitePianoCommand
+        public ICommand PianoCommand
         {
             get
             {
-                if (_whitePianoCommand == null)
+                if (_pianoCommand == null)
                 {
-                    _whitePianoCommand = new RelayCommand(o =>
+                    _pianoCommand = new RelayCommand(o =>
                     {
-                        MessageBox.Show("Added successfully", "Alert", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        MessageBox.Show(o.ToString(), "Alert", MessageBoxButton.OK, MessageBoxImage.Stop);
                     });
                 }
 
-                return _whitePianoCommand;
+                return _pianoCommand;
             }
 
             set
             {
-                _whitePianoCommand = value;
+                _pianoCommand = value;
+            }
+        }
+
+        public void CalculateDistanceBetweenKeys(object o)
+        {
+            if(o is int number)
+            {
+               //
             }
         }
 

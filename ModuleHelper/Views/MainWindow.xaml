@@ -22,14 +22,16 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#FFE6E6E6"/>
             <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Command" Value="{Binding PianoCommand}"/>
         </Style>
         <Style TargetType="{x:Type Button}" x:Key="BlackPianoKey">
-            <Setter Property="Height" Value="60"/>
+            <Setter Property="Height" Value="55"/>
             <Setter Property="Width" Value="24"/>
             <Setter Property="Background" Value="#FF4B4B4B"/>
             <Setter Property="BorderBrush" Value="#FF404040"/>
             <Setter Property="Margin" Value="-12,0"/>
             <Setter Property="Canvas.ZIndex" Value="1"/>
+            <Setter Property="Command" Value="{Binding PianoCommand}"/>
         </Style>
     </Window.Resources>
 
@@ -97,31 +99,31 @@
         <!-- Piano used for chord selection-->
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
             <!-- Octave 1 -->
-            <Button Style="{StaticResource WhitePianoKey}" Content="C" Command="{Binding WhitePianoCommand}"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="C#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="D"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="D#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="E"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="F"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="F#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="G"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="G#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="A"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="A#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="B"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="C" CommandParameter="0"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="C#" CommandParameter="1"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="D" CommandParameter="2"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="D#" CommandParameter="3"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="E" CommandParameter="4"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="F" CommandParameter="5"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="F#" CommandParameter="6"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="G" CommandParameter="7"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="G#" CommandParameter="8"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="A" CommandParameter="9"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="A#" CommandParameter="10"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="B" CommandParameter="11"/>
             <!-- Octave 2 -->
-            <Button Style="{StaticResource WhitePianoKey}" Content="C"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="C#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="D"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="D#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="E"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="F"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="F#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="G"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="G#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="A"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="A#"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="B"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="C" CommandParameter="12"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="C#" CommandParameter="13"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="D" CommandParameter="14"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="D#" CommandParameter="15"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="E" CommandParameter="16"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="F" CommandParameter="17"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="F#" CommandParameter="18"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="G" CommandParameter="19"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="G#" CommandParameter="20"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="A" CommandParameter="21"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="A#" CommandParameter="22"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="B" CommandParameter="23"/>
         </StackPanel>
     </Grid>
 </Window>
