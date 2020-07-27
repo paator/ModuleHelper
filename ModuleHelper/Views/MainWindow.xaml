@@ -16,16 +16,17 @@
         Title="MainWindow" Height="400" Width="658">
 
     <Window.Resources>
-        <Style TargetType="{x:Type Button}" x:Key="WhitePianoKey">
+        <Style TargetType="{x:Type Button}" x:Key="WhitePianoKey" BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
             <Setter Property="Height" Value="100"/>
             <Setter Property="Width" Value="40"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#FFE6E6E6"/>
             <Setter Property="Margin" Value="2,0"/>
             <Setter Property="Command" Value="{Binding PianoCommand}"/>
-            <Setter Property="ClickMode" Value="Press"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
         </Style>
-        <Style TargetType="{x:Type Button}" x:Key="BlackPianoKey">
+        <Style TargetType="{x:Type Button}" x:Key="BlackPianoKey" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
             <Setter Property="Height" Value="55"/>
             <Setter Property="Width" Value="24"/>
             <Setter Property="Background" Value="#FF4B4B4B"/>
@@ -33,7 +34,11 @@
             <Setter Property="Margin" Value="-12,0"/>
             <Setter Property="Canvas.ZIndex" Value="1"/>
             <Setter Property="Command" Value="{Binding PianoCommand}"/>
-            <Setter Property="ClickMode" Value="Press"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="10"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="StackPanelWithGaps">
+            <Setter Property="Margin" Value="4,0"/>
         </Style>
     </Window.Resources>
 
@@ -84,17 +89,23 @@
         <Label Grid.Row="2" Grid.Column="1" Content="Notes in selected scale:"/>
 
         <!-- List View of every musical note in selected scale -->
-        <ListView Grid.Row="2" 
+        <ItemsControl Grid.Row="2" 
                   Grid.Column="2" 
                   Grid.ColumnSpan="3" 
                   ItemsSource="{Binding CurrentMusicalScaleNotes}"
                   Margin="20,0">
-            <ListBox.ItemsPanel>
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Margin" Value="4,0"/>
+                            </Style>
+                        </StackPanel.Resources>
+                    </StackPanel>
                 </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-        </ListView>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
 
         <!-- Create a chord text label definition -->
         <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="Create a chord using piano keyboard:"/>
@@ -102,35 +113,41 @@
         <!-- Piano used for chord selection-->
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
             <!-- Octave 1 -->
-            <Button Style="{StaticResource WhitePianoKey}" Content="C" CommandParameter="0"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="C#" CommandParameter="1"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="D" CommandParameter="2"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="D#" CommandParameter="3"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="E" CommandParameter="4"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="F" CommandParameter="5"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="F#" CommandParameter="6"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="G" CommandParameter="7"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="G#" CommandParameter="8"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="A" CommandParameter="9"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="A#" CommandParameter="10"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="B" CommandParameter="11"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="C4" CommandParameter="0"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="C#4" CommandParameter="1"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="D4" CommandParameter="2"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="D#4" CommandParameter="3"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="E4" CommandParameter="4"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="F4" CommandParameter="5"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="F#4" CommandParameter="6"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="G4" CommandParameter="7"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="G#4" CommandParameter="8"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="A4" CommandParameter="9"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="A#4" CommandParameter="10"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="B4" CommandParameter="11"/>
             <!-- Octave 2 -->
-            <Button Style="{StaticResource WhitePianoKey}" Content="C" CommandParameter="12"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="C#" CommandParameter="13"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="D" CommandParameter="14"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="D#" CommandParameter="15"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="E" CommandParameter="16"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="F" CommandParameter="17"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="F#" CommandParameter="18"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="G" CommandParameter="19"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="G#" CommandParameter="20"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="A" CommandParameter="21"/>
-            <Button Style="{StaticResource BlackPianoKey}" Content="A#" CommandParameter="22"/>
-            <Button Style="{StaticResource WhitePianoKey}" Content="B" CommandParameter="23"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="C5" CommandParameter="12"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="C#5" CommandParameter="13"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="D5" CommandParameter="14"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="D#5" CommandParameter="15"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="E5" CommandParameter="16"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="F5" CommandParameter="17"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="F#5" CommandParameter="18"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="G5" CommandParameter="19"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="G#5" CommandParameter="20"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="A5" CommandParameter="21"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="A#5" CommandParameter="22"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="B5" CommandParameter="23"/>
         </StackPanel>
 
         <!-- Chord in module label -->
-        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker as follows: "/>
-        <ListBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}"/>
+        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Content="Enter arpeggio for specified chord in your tracker as follows: "/>
+        <ItemsControl Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Window>
