@@ -2,41 +2,26 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Xml;
 using ModuleHelper.Models;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Controls;
 
 namespace ModuleHelper.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        #region fields  
         private ObservableCollection<MusicalScaleModel> _musicalScales;
+        private ObservableCollection<string> _currentKeyDifferencesInHex;
+        private List<int> _pressedKeysNumbers;
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
         private ICommand _pianoCommand;
-        private List<int> _pressedKeysNumbers;
-        private ObservableCollection<string> _currentKeyDifferencesInHex;
+        #endregion fields  
 
+        #region properties
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
-
-        public MainWindowViewModel()
-        {
-            _musicalScales = new ObservableCollection<MusicalScaleModel>();
-            _pressedKeysNumbers = new List<int>();
-            _currentKeyDifferencesInHex = new ObservableCollection<string>();
-            _currentMusicalScale = new MusicalScaleModel
-            {
-                Name = default,
-                Notes = new ObservableCollection<Note>()
-            };
-
-            LoadScalesFromXml("musicalscales.xml");
-        }
 
         public ICommand PianoCommand
         {
@@ -44,7 +29,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_pianoCommand == null)
                 {
-                    _pianoCommand = new RelayCommand(param => CalculateDistanceBetweenKeys(param));
+                    _pianoCommand = new RelayCommand(param => CalculateDistanceBetweenKeys(param), param => CheckIfKeyIsInScale(param));
                 }
 
                 return _pianoCommand;
@@ -53,23 +38,6 @@ namespace ModuleHelper.ViewModels
             set
             {
                 _pianoCommand = value;
-            }
-        }
-
-        public void CalculateDistanceBetweenKeys(object param)
-        {
-            CurrentKeyDifferences.Clear();
-
-            if(param is string s)
-            {
-                var number = Int16.Parse(s);
-                _pressedKeysNumbers.Add(number);
-            }
-
-            for(int i = 0; i < _pressedKeysNumbers.Count(); i++)
-            {
-                int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
-                CurrentKeyDifferences.Add(difference.ToString("X"));
             }
         }
 
@@ -164,6 +132,51 @@ namespace ModuleHelper.ViewModels
                 }
             }
         }
+        #endregion properties
+
+        #region constructor
+        public MainWindowViewModel()
+        {
+            _musicalScales = new ObservableCollection<MusicalScaleModel>();
+            _pressedKeysNumbers = new List<int>();
+            _currentKeyDifferencesInHex = new ObservableCollection<string>();
+            _currentMusicalScale = new MusicalScaleModel
+            {
+                Name = default,
+                Notes = new ObservableCollection<Note>()
+            };
+
+            LoadScalesFromXml("musicalscales.xml");
+        }
+        #endregion constructor
+
+        #region methods
+        public void CalculateDistanceBetweenKeys(object param)
+        {
+            CurrentKeyDifferences.Clear();
+
+            if (param is string s)
+            {
+                var number = int.Parse(s);
+                _pressedKeysNumbers.Add(number);
+            }
+
+            for (int i = 0; i < _pressedKeysNumbers.Count(); i++)
+            {
+                int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
+                CurrentKeyDifferences.Add(difference.ToString("X"));
+            }
+        }
+
+        public bool CheckIfKeyIsInScale(object param)
+        {
+            if (param is string s)
+            {
+                var number = int.Parse(s);
+                return CurrentMusicalScaleNotes.Any(note => Modulo(number, 12) == (int)note);
+            }
+            else return false;
+        }
 
         public void LoadScalesFromXml(string filePath)
         {
@@ -230,12 +243,13 @@ namespace ModuleHelper.ViewModels
         {
             return (x % m + m) % m;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion methods
 
         protected virtual void OnPropertyChange(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
