@@ -20,7 +20,7 @@ namespace ModuleHelper.ViewModels
         private Note _currentNote;
         private ICommand _pianoCommand;
         private List<int> _pressedKeysNumbers;
-        private ObservableCollection<int> _currentKeyDifferences;
+        private ObservableCollection<string> _currentKeyDifferencesInHex;
 
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
 
@@ -28,7 +28,7 @@ namespace ModuleHelper.ViewModels
         {
             _musicalScales = new ObservableCollection<MusicalScaleModel>();
             _pressedKeysNumbers = new List<int>();
-            _currentKeyDifferences = new ObservableCollection<int>();
+            _currentKeyDifferencesInHex = new ObservableCollection<string>();
             _currentMusicalScale = new MusicalScaleModel
             {
                 Name = default,
@@ -69,7 +69,7 @@ namespace ModuleHelper.ViewModels
             for(int i = 0; i < _pressedKeysNumbers.Count(); i++)
             {
                 int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
-                CurrentKeyDifferences.Add(difference);
+                CurrentKeyDifferences.Add(difference.ToString("X"));
             }
         }
 
@@ -87,14 +87,17 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        public ObservableCollection<int> CurrentKeyDifferences
+        public ObservableCollection<string> CurrentKeyDifferences
         {
-            get => _currentKeyDifferences;
+            get
+            {
+                return _currentKeyDifferencesInHex;
+            }
             set
             {
-                if(_currentKeyDifferences != value)
+                if(_currentKeyDifferencesInHex != value)
                 {
-                    _currentKeyDifferences = value;
+                    _currentKeyDifferencesInHex = value;
                     OnPropertyChange("CurrentKeyDifferences");
                 }
             }
