@@ -19,13 +19,16 @@ namespace ModuleHelper.ViewModels
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
         private ICommand _pianoCommand;
+        private List<int> _pressedKeysNumbers;
+        private ObservableCollection<int> _currentKeyDifferences;
 
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
 
         public MainWindowViewModel()
         {
             _musicalScales = new ObservableCollection<MusicalScaleModel>();
-
+            _pressedKeysNumbers = new List<int>();
+            _currentKeyDifferences = new ObservableCollection<int>();
             _currentMusicalScale = new MusicalScaleModel
             {
                 Name = default,
@@ -41,10 +44,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_pianoCommand == null)
                 {
-                    _pianoCommand = new RelayCommand(o =>
-                    {
-                        MessageBox.Show(o.ToString(), "Alert", MessageBoxButton.OK, MessageBoxImage.Stop);
-                    });
+                    _pianoCommand = new RelayCommand(param => CalculateDistanceBetweenKeys(param));
                 }
 
                 return _pianoCommand;
@@ -56,11 +56,20 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        public void CalculateDistanceBetweenKeys(object o)
+        public void CalculateDistanceBetweenKeys(object param)
         {
-            if(o is int number)
+            CurrentKeyDifferences.Clear();
+
+            if(param is string s)
             {
-               //
+                var number = Int16.Parse(s);
+                _pressedKeysNumbers.Add(number);
+            }
+
+            for(int i = 0; i < _pressedKeysNumbers.Count(); i++)
+            {
+                int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
+                CurrentKeyDifferences.Add(difference);
             }
         }
 
@@ -78,6 +87,19 @@ namespace ModuleHelper.ViewModels
             }
         }
 
+        public ObservableCollection<int> CurrentKeyDifferences
+        {
+            get => _currentKeyDifferences;
+            set
+            {
+                if(_currentKeyDifferences != value)
+                {
+                    _currentKeyDifferences = value;
+                    OnPropertyChange("CurrentKeyDifferences");
+                }
+            }
+        }
+
         public MusicalScaleModel CurrentMusicalScale
         {
             get => _currentMusicalScale;
@@ -88,10 +110,10 @@ namespace ModuleHelper.ViewModels
                 {
                     _currentMusicalScale = value;
 
-                    //fixing position of keys relative to main key when we select new scale
+                    //fixing position of keys relative to main key when selecting new scale
                     ChangeNotesRelativeToKey(CurrentMusicalScaleNotes[0]); 
 
-                    //I update current scale's name and notes as well
+                    //updating current scale's name and notes as well
                     OnPropertyChange("CurrentMusicalScale");
                     OnPropertyChange("CurrentMusicalScaleName");
                     OnPropertyChange("CurrentMusicalScaleNotes");
@@ -140,10 +162,6 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        /// <summary>
-        /// Reads xml file containing defined musical scales.
-        /// </summary>
-        /// <param name="filePath"></param>
         public void LoadScalesFromXml(string filePath)
         {
             XmlDocument document = new XmlDocument();
@@ -178,10 +196,6 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        /// <summary>
-        /// Moves all notes in currently selected scale relatively to currently selected key note.
-        /// </summary>
-        /// <param name="previouslySelectedNote"></param>
         public void ChangeNotesRelativeToKey(Note previouslySelectedNote)
         {
             var selectedNoteIndex = (int)CurrentNote;
@@ -209,12 +223,6 @@ namespace ModuleHelper.ViewModels
             }
         }
 
-        /// <summary>
-        /// A simple modulo division implementation
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="m"></param>
-        /// <returns>x mod m</returns>
         private int Modulo(int x, int m)
         {
             return (x % m + m) % m;

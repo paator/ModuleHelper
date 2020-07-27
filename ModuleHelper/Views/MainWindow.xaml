@@ -125,5 +125,11 @@
             <Button Style="{StaticResource BlackPianoKey}" Content="A#" CommandParameter="22"/>
             <Button Style="{StaticResource WhitePianoKey}" Content="B" CommandParameter="23"/>
         </StackPanel>
+
+        <!-- Chord in module label -->
+        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker as follows: "/>
+
+        <ListBox Grid.Row="5" Grid.Column="3" ItemsSource="{Binding CurrentKeyDifferences}"/>
+        
     </Grid>
 </Window>
