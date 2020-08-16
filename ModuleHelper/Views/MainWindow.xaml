@@ -104,6 +104,8 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
+        <CheckBox Grid.Row="3" Grid.Column="3" Content="Key scale restriction" IsChecked="{Binding IsUsingScales}"/>
+
         <!-- Create a chord text label definition -->
         <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="Create a chord using piano keyboard:"/>
 

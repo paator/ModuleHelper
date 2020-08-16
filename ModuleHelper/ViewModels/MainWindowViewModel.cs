@@ -18,10 +18,25 @@ namespace ModuleHelper.ViewModels
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
         private ICommand _pianoCommand;
+        private bool _isUsingScales;
         #endregion fields  
 
         #region properties
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
+
+        public bool IsUsingScales
+        {
+            get => _isUsingScales;
+
+            set
+            {
+                if(_isUsingScales != value)
+                {
+                    _isUsingScales = value;
+                    OnPropertyChange("IsUsingScales");
+                }
+            }
+        }
 
         public ICommand PianoCommand
         {
@@ -170,7 +185,11 @@ namespace ModuleHelper.ViewModels
 
         public bool CheckIfKeyIsInScale(object param)
         {
-            if (param is string s)
+            if(!_isUsingScales)
+            {
+                return true;
+            }
+            else if (param is string s)
             {
                 var number = int.Parse(s);
                 return CurrentMusicalScaleNotes.Any(note => Modulo(number, 12) == (int)note);
