@@ -37,6 +37,12 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="FontSize" Value="10"/>
         </Style>
+        <Style TargetType="{x:Type Button}" x:Key="UtilityButton" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Margin" Value="10,0"/>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
@@ -54,7 +60,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
@@ -140,7 +148,7 @@
         </StackPanel>
 
         <!-- Chord in module label -->
-        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Content="Enter arpeggio for specified chord in your tracker as follows: "/>
+        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker:"/>
         <ItemsControl Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -149,9 +157,14 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
                 <Style>
-                    <Setter Property="FrameworkElement.Margin" Value="5"/>
+                    <Setter Property="FrameworkElement.Margin" Value="5,0"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="5" Margin="5,10">
+            <Button Content="Play" Style="{StaticResource UtilityButton}" Command="{Binding PlayCommand}"/>
+            <Button Content="Clear" Style="{StaticResource UtilityButton}" Command="{Binding ClearCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>

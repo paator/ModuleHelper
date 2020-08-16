@@ -18,6 +18,8 @@ namespace ModuleHelper.ViewModels
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
         private ICommand _pianoCommand;
+        private ICommand _clearCommand;
+        private ICommand _playCommand;
         private bool _isUsingScales;
         #endregion fields  
 
@@ -53,6 +55,24 @@ namespace ModuleHelper.ViewModels
             set
             {
                 _pianoCommand = value;
+            }
+        }
+        
+        public ICommand ClearCommand
+        {
+            get
+            {
+                if(_clearCommand == null)
+                {
+                    _clearCommand = new RelayCommand(param => ClearChord());
+                }
+
+                return _clearCommand;
+            }
+
+            set
+            {
+                _clearCommand = value;
             }
         }
 
@@ -162,6 +182,8 @@ namespace ModuleHelper.ViewModels
             };
 
             LoadScalesFromXml("musicalscales.xml");
+
+            CalculateDistanceBetweenKeys(1);
         }
         #endregion constructor
 
@@ -169,7 +191,6 @@ namespace ModuleHelper.ViewModels
         public void CalculateDistanceBetweenKeys(object param)
         {
             CurrentKeyDifferences.Clear();
-
             if (param is string s)
             {
                 var number = int.Parse(s);
@@ -204,6 +225,12 @@ namespace ModuleHelper.ViewModels
                 return CurrentMusicalScaleNotes.Any(note => Modulo(number, 12) == (int)note);
             }
             else return false;
+        }
+
+        public void ClearChord()
+        {
+            _pressedKeysNumbers.Clear();
+            CurrentKeyDifferences.Clear();
         }
 
         public void LoadScalesFromXml(string filePath)
