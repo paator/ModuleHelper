@@ -37,9 +37,6 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="FontSize" Value="10"/>
         </Style>
-        <Style TargetType="{x:Type TextBlock}" x:Key="StackPanelWithGaps">
-            <Setter Property="Margin" Value="4,0"/>
-        </Style>
     </Window.Resources>
 
     <Grid>
@@ -148,6 +145,11 @@
                     <StackPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="FrameworkElement.Margin" Value="5"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
         </ItemsControl>
     </Grid>
 </Window>
