@@ -173,8 +173,17 @@ namespace ModuleHelper.ViewModels
             if (param is string s)
             {
                 var number = int.Parse(s);
-                _pressedKeysNumbers.Add(number);
+                if (_pressedKeysNumbers.Contains(number))
+                {
+                    _pressedKeysNumbers.Remove(number);
+                }
+                else
+                {
+                    _pressedKeysNumbers.Add(number);
+                }
             }
+
+            _pressedKeysNumbers.Sort();
 
             for (int i = 0; i < _pressedKeysNumbers.Count(); i++)
             {
