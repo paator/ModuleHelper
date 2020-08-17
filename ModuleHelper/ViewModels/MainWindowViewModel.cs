@@ -6,6 +6,11 @@ using System.Linq;
 using System.Xml;
 using ModuleHelper.Models;
 using System.Windows.Input;
+using NAudio.Wave.SampleProviders;
+using NAudio.Wave;
+using System.Threading;
+using System.Windows;
+using System.Threading.Tasks;
 
 namespace ModuleHelper.ViewModels
 {
@@ -182,8 +187,6 @@ namespace ModuleHelper.ViewModels
             };
 
             LoadScalesFromXml("musicalscales.xml");
-
-            CalculateDistanceBetweenKeys(1);
         }
         #endregion constructor
 
@@ -210,6 +213,23 @@ namespace ModuleHelper.ViewModels
             {
                 int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
                 CurrentKeyDifferences.Add(difference.ToString("X"));
+            }
+
+            var sine20Seconds = new SignalGenerator()
+            {
+                Gain = 0.12,
+                Frequency = CalculateFrequency(int.Parse((string)param)),
+                Type = SignalGeneratorType.Sin
+            }
+            .Take(TimeSpan.FromSeconds(0.6));
+
+            using var wo = new WaveOutEvent();
+            wo.Init(sine20Seconds);
+            wo.Play();
+
+            while (wo.PlaybackState == PlaybackState.Playing)
+            {
+                Thread.Sleep(1);
             }
         }
 
@@ -293,8 +313,15 @@ namespace ModuleHelper.ViewModels
                 CurrentMusicalScaleNotes[i] = newNote;
             }
         }
+        public static double CalculateFrequency(int n)
+        {
+            var freq = 440.0 * Math.Pow(2.0, (n - 49.0) / 12.0);
 
-        private int Modulo(int x, int m)
+            //we're starting from 4th octave
+            return freq * 4;
+        }
+
+        public static int Modulo(int x, int m)
         {
             return (x % m + m) % m;
         }
