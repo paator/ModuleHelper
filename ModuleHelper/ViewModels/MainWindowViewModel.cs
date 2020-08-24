@@ -51,7 +51,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_pianoCommand == null)
                 {
-                    _pianoCommand = new RelayCommand(param => CalculateDistanceBetweenKeys(param), param => CheckIfKeyIsInScale(param));
+                    _pianoCommand = new RelayCommand(async param => await CalculateDistanceBetweenKeys(param), param => CheckIfKeyIsInScale(param));
                 }
 
                 return _pianoCommand;
@@ -78,6 +78,24 @@ namespace ModuleHelper.ViewModels
             set
             {
                 _clearCommand = value;
+            }
+        }
+
+        public ICommand PlayCommand
+        {
+            get
+            {
+                if (_playCommand == null)
+                {
+                    _playCommand = new RelayCommand(async param => await PlayArpeggio(_pressedKeysNumbers, 5));
+                }
+
+                return _playCommand;
+            }
+
+            set
+            {
+                _playCommand = value;
             }
         }
 
@@ -191,7 +209,7 @@ namespace ModuleHelper.ViewModels
         #endregion constructor
 
         #region methods
-        public void CalculateDistanceBetweenKeys(object param)
+        public async Task CalculateDistanceBetweenKeys(object param)
         {
             CurrentKeyDifferences.Clear();
             if (param is string s)
@@ -215,21 +233,48 @@ namespace ModuleHelper.ViewModels
                 CurrentKeyDifferences.Add(difference.ToString("X"));
             }
 
-            var sine20Seconds = new SignalGenerator()
+            var square20Seconds = new SignalGenerator()
             {
                 Gain = 0.12,
                 Frequency = CalculateFrequency(int.Parse((string)param)),
-                Type = SignalGeneratorType.Sin
+                Type = SignalGeneratorType.Square
             }
             .Take(TimeSpan.FromSeconds(0.6));
 
             using var wo = new WaveOutEvent();
-            wo.Init(sine20Seconds);
-            wo.Play();
+            wo.Init(square20Seconds);
 
-            while (wo.PlaybackState == PlaybackState.Playing)
+            await Task.Run(() => PlaySound(wo));
+        }
+
+        public void PlaySound(WaveOutEvent waveOutEvent)
+        {
+            waveOutEvent.Play();
+            while (waveOutEvent.PlaybackState == PlaybackState.Playing)
             {
                 Thread.Sleep(1);
+            }
+        }
+
+        public async Task PlayArpeggio(IEnumerable<int> chordKeyNumbers, int length)
+        {
+            for(int i = 0; i <= length; i++)
+            {
+                foreach (var num in chordKeyNumbers)
+                {
+                    var sg = new SignalGenerator()
+                    {
+                        Gain = 0.12,
+                        Frequency = CalculateFrequency(num),
+                        Type = SignalGeneratorType.Square
+                    }
+                    .Take(TimeSpan.FromSeconds(0.1));
+
+                    using var wo = new WaveOutEvent();
+                    wo.Init(sg);
+
+                    await Task.Run(() => PlaySound(wo));
+                }
             }
         }
 
