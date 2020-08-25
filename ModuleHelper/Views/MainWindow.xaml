@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="400" Width="658">
+        Title="MainWindow" Height="450" Width="720">
 
     <Window.Resources>
         <Style TargetType="{x:Type Button}" x:Key="WhitePianoKey" BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
@@ -118,7 +118,7 @@
         <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="Create a chord using piano keyboard:"/>
 
         <!-- Piano used for chord selection-->
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
             <!-- Octave 1 -->
             <Button Style="{StaticResource WhitePianoKey}" Content="C4" CommandParameter="0"/>
             <Button Style="{StaticResource BlackPianoKey}" Content="C#4" CommandParameter="1"/>
@@ -147,9 +147,24 @@
             <Button Style="{StaticResource WhitePianoKey}" Content="B5" CommandParameter="23"/>
         </StackPanel>
 
-        <!-- Chord in module label -->
-        <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker:"/>
-        <ItemsControl Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3">
+            <Button Style="{StaticResource WhitePianoKey}" Content="C6" CommandParameter="24"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="C#6" CommandParameter="25"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="D6" CommandParameter="26"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="D#6" CommandParameter="27"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="E6" CommandParameter="28"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="F6" CommandParameter="29"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="F#6" CommandParameter="30"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="G6" CommandParameter="31"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="G#6" CommandParameter="32"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="A6" CommandParameter="33"/>
+            <Button Style="{StaticResource BlackPianoKey}" Content="A#6" CommandParameter="34"/>
+            <Button Style="{StaticResource WhitePianoKey}" Content="B6" CommandParameter="34"/>
+        </StackPanel>
+
+        <!-- Chord display -->
+        <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker:"/>
+        <ItemsControl Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -161,8 +176,13 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
+        <CheckBox Grid.Row="8" Grid.Column="1" Content="Hex notation" IsChecked="True"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="5" Margin="5,10">
+        <!-- Arp playback options -->
+        <Label Grid.Row="6" Grid.Column="3" Content="Arpeggio speed:"/>
+        <Slider Grid.Column="3" Grid.Row="7" Minimum="0.05" Maximum="0.2" Margin="5" Value="{Binding ArpDelayTime}" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="8" Margin="5,10">
             <Button Content="Play" Style="{StaticResource UtilityButton}" Command="{Binding PlayCommand}"/>
             <Button Content="Clear" Style="{StaticResource UtilityButton}" Command="{Binding ClearCommand}"/>
         </StackPanel>

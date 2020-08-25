@@ -8,9 +8,7 @@ using ModuleHelper.Models;
 using System.Windows.Input;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
-using System.Threading;
 using System.Windows;
-using System.Threading.Tasks;
 using ModuleHelper.Utility;
 
 namespace ModuleHelper.ViewModels
@@ -27,10 +25,28 @@ namespace ModuleHelper.ViewModels
         private ICommand _clearCommand;
         private ICommand _playCommand;
         private bool _isUsingScales;
+        private bool _isUsingHexNotation;
+        private double _arpDelayTime;
+        private const double _maximumArpDelayTime = 0.21;
+        private const double _minimumArpDelayTime = 0.05;
         #endregion fields  
 
         #region properties
         public Array Notes { get => Enum.GetValues(typeof(Note)); }
+
+        public bool IsUsingHexNotation
+        {
+            get => _isUsingHexNotation;
+
+            set
+            {
+                if (_isUsingHexNotation != value)
+                {
+                    _isUsingHexNotation = value;
+                    OnPropertyChange("IsUsingHexNotation");
+                }
+            }
+        }
 
         public bool IsUsingScales
         {
@@ -42,6 +58,20 @@ namespace ModuleHelper.ViewModels
                 {
                     _isUsingScales = value;
                     OnPropertyChange("IsUsingScales");
+                }
+            }
+        }
+
+        public double ArpDelayTime
+        {
+            get => _arpDelayTime;
+
+            set
+            {
+                if (_arpDelayTime != value)
+                {
+                    _arpDelayTime = value;
+                    OnPropertyChange("ArpDelayTime");
                 }
             }
         }
@@ -88,7 +118,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_playCommand == null)
                 {
-                    _playCommand = new RelayCommand(param => PlayArpeggio(_pressedKeysNumbers, 5));
+                    _playCommand = new RelayCommand(param => PlayArpeggio(_pressedKeysNumbers, 3));
                 }
 
                 return _playCommand;
@@ -199,6 +229,7 @@ namespace ModuleHelper.ViewModels
             _musicalScales = new ObservableCollection<MusicalScaleModel>();
             _pressedKeysNumbers = new List<int>();
             _currentKeyDifferencesInHex = new ObservableCollection<string>();
+            _arpDelayTime = _minimumArpDelayTime;
             _currentMusicalScale = new MusicalScaleModel
             {
                 Name = default,
@@ -265,7 +296,7 @@ namespace ModuleHelper.ViewModels
                     };
 
                     var trimmed = new OffsetSampleProvider(squareWave);
-                    var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(0.04));
+                    var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(_maximumArpDelayTime - _arpDelayTime));
                     arpeggioInputs.Add(trimmedWithTimeSpan);
                 }
             }
