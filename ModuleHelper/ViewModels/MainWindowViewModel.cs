@@ -249,6 +249,10 @@ namespace ModuleHelper.ViewModels
 
         public void PlayArpeggio(IEnumerable<int> chordKeyNumbers, int length)
         {
+            if (!chordKeyNumbers.Any()) return;
+
+            List<ISampleProvider> arpeggioInputs = new List<ISampleProvider>();
+
             for (int i = 0; i <= length; i++)
             {
                 foreach (var num in chordKeyNumbers)
@@ -261,11 +265,19 @@ namespace ModuleHelper.ViewModels
                     };
 
                     var trimmed = new OffsetSampleProvider(squareWave);
-                    var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(0.1));
-
-                    WaveformPlayer.Instance.PlayWaveform(trimmedWithTimeSpan);
+                    var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(0.04));
+                    arpeggioInputs.Add(trimmedWithTimeSpan);
                 }
             }
+
+            var concatenatedWaveforms = arpeggioInputs[0];
+
+            foreach (var input in arpeggioInputs.Skip(1)) 
+            {
+                concatenatedWaveforms = concatenatedWaveforms.FollowedBy(input);
+            }
+
+            WaveformPlayer.Instance.PlayWaveform(concatenatedWaveforms);
         }
 
         public bool CheckIfKeyIsInScale(object param)
