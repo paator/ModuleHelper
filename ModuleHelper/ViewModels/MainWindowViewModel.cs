@@ -11,6 +11,7 @@ using NAudio.Wave;
 using System.Threading;
 using System.Windows;
 using System.Threading.Tasks;
+using ModuleHelper.Utility;
 
 namespace ModuleHelper.ViewModels
 {
@@ -51,7 +52,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_pianoCommand == null)
                 {
-                    _pianoCommand = new RelayCommand(async param => await CalculateDistanceBetweenKeys(param), param => CheckIfKeyIsInScale(param));
+                    _pianoCommand = new RelayCommand(param => CalculateDistanceBetweenKeys(param), param => CheckIfKeyIsInScale(param));
                 }
 
                 return _pianoCommand;
@@ -87,7 +88,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_playCommand == null)
                 {
-                    _playCommand = new RelayCommand(async param => await PlayArpeggio(_pressedKeysNumbers, 5));
+                    _playCommand = new RelayCommand(param => PlayArpeggio(_pressedKeysNumbers, 5));
                 }
 
                 return _playCommand;
@@ -209,7 +210,7 @@ namespace ModuleHelper.ViewModels
         #endregion constructor
 
         #region methods
-        public async Task CalculateDistanceBetweenKeys(object param)
+        public void CalculateDistanceBetweenKeys(object param)
         {
             CurrentKeyDifferences.Clear();
             if (param is string s)
@@ -233,47 +234,36 @@ namespace ModuleHelper.ViewModels
                 CurrentKeyDifferences.Add(difference.ToString("X"));
             }
 
-            var square20Seconds = new SignalGenerator()
+            var squareWave = new SignalGenerator()
             {
                 Gain = 0.12,
                 Frequency = CalculateFrequency(int.Parse((string)param)),
                 Type = SignalGeneratorType.Square
-            }
-            .Take(TimeSpan.FromSeconds(0.6));
+            };
 
-            using var wo = new WaveOutEvent();
-            wo.Init(square20Seconds);
+            var trimmed = new OffsetSampleProvider(squareWave);
+            var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(0.4));
 
-            await Task.Run(() => PlaySound(wo));
+            WaveformPlayer.Instance.PlayWaveform(trimmedWithTimeSpan);
         }
 
-        public void PlaySound(WaveOutEvent waveOutEvent)
+        public void PlayArpeggio(IEnumerable<int> chordKeyNumbers, int length)
         {
-            waveOutEvent.Play();
-            while (waveOutEvent.PlaybackState == PlaybackState.Playing)
-            {
-                Thread.Sleep(1);
-            }
-        }
-
-        public async Task PlayArpeggio(IEnumerable<int> chordKeyNumbers, int length)
-        {
-            for(int i = 0; i <= length; i++)
+            for (int i = 0; i <= length; i++)
             {
                 foreach (var num in chordKeyNumbers)
                 {
-                    var sg = new SignalGenerator()
+                    var squareWave = new SignalGenerator()
                     {
                         Gain = 0.12,
                         Frequency = CalculateFrequency(num),
                         Type = SignalGeneratorType.Square
-                    }
-                    .Take(TimeSpan.FromSeconds(0.1));
+                    };
 
-                    using var wo = new WaveOutEvent();
-                    wo.Init(sg);
+                    var trimmed = new OffsetSampleProvider(squareWave);
+                    var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(0.1));
 
-                    await Task.Run(() => PlaySound(wo));
+                    WaveformPlayer.Instance.PlayWaveform(trimmedWithTimeSpan);
                 }
             }
         }
