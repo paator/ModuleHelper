@@ -1,5 +1,7 @@
 # ModuleHelper
-Application that helps writing music in old tracker software.
+Windows Presentation Foundation application that helps writing music in old tracker software.
+<br />
+
 ![image](https://user-images.githubusercontent.com/47994455/91340968-200f1400-e7d9-11ea-9c77-4de61121d259.png)
 ## Currently supported features
 - Quick access to various musical scales that can be manually added via xml file
@@ -11,7 +13,7 @@ Application that helps writing music in old tracker software.
 - [NAudio](https://github.com/naudio/NAudio)
 - [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 ## Requirements
-.NET Core 3.1
+- .NET Core 3.1
 ## Usage:
 Compile with:
 ```
