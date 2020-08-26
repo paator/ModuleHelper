@@ -17,7 +17,7 @@ namespace ModuleHelper.ViewModels
     {
         #region fields  
         private ObservableCollection<MusicalScaleModel> _musicalScales;
-        private ObservableCollection<string> _currentKeyDifferencesInHex;
+        private ObservableCollection<string> _currentKeyDifferences;
         private List<int> _pressedKeysNumbers;
         private MusicalScaleModel _currentMusicalScale;
         private Note _currentNote;
@@ -42,8 +42,10 @@ namespace ModuleHelper.ViewModels
             {
                 if (_isUsingHexNotation != value)
                 {
+                    
                     _isUsingHexNotation = value;
                     OnPropertyChange("IsUsingHexNotation");
+                    SwitchBetweenHexAndDec();
                 }
             }
         }
@@ -148,13 +150,13 @@ namespace ModuleHelper.ViewModels
         {
             get
             {
-                return _currentKeyDifferencesInHex;
+                return _currentKeyDifferences;
             }
             set
             {
-                if(_currentKeyDifferencesInHex != value)
+                if(_currentKeyDifferences != value)
                 {
-                    _currentKeyDifferencesInHex = value;
+                    _currentKeyDifferences = value;
                     OnPropertyChange("CurrentKeyDifferences");
                 }
             }
@@ -228,7 +230,7 @@ namespace ModuleHelper.ViewModels
         {
             _musicalScales = new ObservableCollection<MusicalScaleModel>();
             _pressedKeysNumbers = new List<int>();
-            _currentKeyDifferencesInHex = new ObservableCollection<string>();
+            _currentKeyDifferences = new ObservableCollection<string>();
             _arpDelayTime = _minimumArpDelayTime;
             _currentMusicalScale = new MusicalScaleModel
             {
@@ -262,7 +264,15 @@ namespace ModuleHelper.ViewModels
             for (int i = 0; i < _pressedKeysNumbers.Count(); i++)
             {
                 int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
-                CurrentKeyDifferences.Add(difference.ToString("X"));
+
+                if(_isUsingHexNotation)
+                {
+                    CurrentKeyDifferences.Add(difference.ToString("X"));
+                }
+                else
+                {
+                    CurrentKeyDifferences.Add(difference.ToString());
+                }
             }
 
             var squareWave = new SignalGenerator()
@@ -397,6 +407,20 @@ namespace ModuleHelper.ViewModels
 
             //we're starting from 4th octave
             return freq * 4;
+        }
+
+        public void SwitchBetweenHexAndDec()
+        {
+            if (_isUsingHexNotation)
+            {
+                var enumeration = CurrentKeyDifferences.Select(x => int.Parse(x).ToString("X"));
+                CurrentKeyDifferences = new ObservableCollection<string>(enumeration);
+            }
+            else
+            {
+                var enumeration = CurrentKeyDifferences.Select(x => Convert.ToInt64(x, 16).ToString());
+                CurrentKeyDifferences = new ObservableCollection<string>(enumeration);
+            }
         }
 
         public static int Modulo(int x, int m)

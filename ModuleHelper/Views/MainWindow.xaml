@@ -176,7 +176,7 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-        <CheckBox Grid.Row="8" Grid.Column="1" Content="Hex notation" IsChecked="True"/>
+        <CheckBox Grid.Row="8" Grid.Column="1" Content="Hex notation" IsChecked="{Binding IsUsingHexNotation}"/>
 
         <!-- Arp playback options -->
         <Label Grid.Row="6" Grid.Column="3" Content="Arpeggio speed:"/>
