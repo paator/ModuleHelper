@@ -32,6 +32,11 @@ namespace ModuleHelper.Utility
             _mixer.AddMixerInput(input);
         }
 
+        public void StopPlayback()
+        {
+            _mixer.RemoveAllMixerInputs();
+        }
+
         public void Dispose()
         {
             _outputDevice.Dispose();

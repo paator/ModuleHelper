@@ -318,6 +318,7 @@ namespace ModuleHelper.ViewModels
                 concatenatedWaveforms = concatenatedWaveforms.FollowedBy(input);
             }
 
+            WaveformPlayer.Instance.StopPlayback();
             WaveformPlayer.Instance.PlayWaveform(concatenatedWaveforms);
         }
 

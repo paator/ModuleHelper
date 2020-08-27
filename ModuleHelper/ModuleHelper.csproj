@@ -7,8 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\mh.ico" />
+    <None Remove="Views\moduleh_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="NAudio" Version="1.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="mh.ico" />
   </ItemGroup>
 
 </Project>

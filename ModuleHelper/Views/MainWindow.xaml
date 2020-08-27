@@ -13,7 +13,8 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="450" Width="720">
+        ResizeMode="NoResize"
+        Title="Module Helper 1.0" Height="450" Width="720" Icon="/mh.ico">
 
     <Window.Resources>
         <Style TargetType="{x:Type Button}" x:Key="WhitePianoKey" BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
