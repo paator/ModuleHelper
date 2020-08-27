@@ -13,7 +13,7 @@ Windows Presentation Foundation application that helps writing music in old trac
 - [NAudio](https://github.com/naudio/NAudio)
 - [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 ## Requirements
-- .NET Core 3.1
+- .NET Core 3.1 Runtime
 ## Usage:
 Compile with:
 ```
