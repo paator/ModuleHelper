@@ -344,7 +344,7 @@ namespace ModuleHelper.ViewModels
 
         public void LoadScalesFromXml(string filePath)
         {
-            XmlDocument document = new XmlDocument();
+            XmlDocument document = new XmlDocument(); 
 
             document.Load(filePath);
 

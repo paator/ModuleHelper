@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="musicalscales.xml" />
     <None Remove="Views\mh.ico" />
     <None Remove="Views\moduleh_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="musicalscales.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
