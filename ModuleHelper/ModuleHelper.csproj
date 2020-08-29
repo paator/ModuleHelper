@@ -4,13 +4,17 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>mh.ico</ApplicationIcon>
+    <AssemblyName>ModuleHelper</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="musicalscales.xml" />
-    <None Remove="Views\mh.ico" />
-    <None Remove="Views\moduleh_icon.png" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
 
   <ItemGroup>
     <Content Include="musicalscales.xml">

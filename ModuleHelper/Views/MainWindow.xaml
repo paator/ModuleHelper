@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         Title="Module Helper 1.0" Height="450" Width="720" Icon="/mh.ico">
 
     <Window.Resources>
