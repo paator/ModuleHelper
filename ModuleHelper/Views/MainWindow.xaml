@@ -185,7 +185,7 @@
                 <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#6" CommandParameter="32"/>
                 <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A6" CommandParameter="33"/>
                 <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#6" CommandParameter="34"/>
-                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B6" CommandParameter="34"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B6" CommandParameter="35"/>
             </StackPanel>
         </StackPanel>
         <!-- Chord display -->
