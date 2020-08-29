@@ -14,7 +14,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         ResizeMode="CanMinimize"
-        Title="Module Helper 1.0" Height="450" Width="720" Icon="/mh.ico">
+        Title="Module Helper 1.0" Height="460" Width="760" Icon="/mh.ico">
 
     <Window.Resources>
         <Style TargetType="{x:Type ToggleButton}" x:Key="WhitePianoKey" BasedOn="{StaticResource MaterialDesignRaisedLightButton}">
@@ -63,7 +63,7 @@
         </Style>
         <Style TargetType="{x:Type Button}" x:Key="UtilityButton" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
             <Setter Property="Height" Value="24"/>
-            <Setter Property="Width" Value="80"/>
+            <Setter Property="Width" Value="64"/>
             <Setter Property="Margin" Value="10,0"/>
         </Style>
 
@@ -190,18 +190,22 @@
         </StackPanel>
         <!-- Chord display -->
         <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker:"/>
-        <ItemsControl Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Setter Property="FrameworkElement.Margin" Value="5,0"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
+        <ScrollViewer Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding CurrentKeyDifferences}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="FrameworkElement.Margin" Value="5,0"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Chord display options -->
         <CheckBox Grid.Row="8" Grid.Column="1" Content="Hex notation" IsChecked="{Binding IsUsingHexNotation}"/>
 
         <!-- Arp playback options -->
@@ -210,6 +214,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="8" Margin="5,10">
             <Button Content="Play" Style="{StaticResource UtilityButton}" Command="{Binding PlayCommand}"/>
+            <Button Content="Stop" Style="{StaticResource UtilityButton}" Command="{Binding StopCommand}"/>
             <Button Content="Clear" Style="{StaticResource UtilityButton}" Command="{Binding ClearCommand}" Click="Clear_Button_Click"/>
         </StackPanel>
     </Grid>

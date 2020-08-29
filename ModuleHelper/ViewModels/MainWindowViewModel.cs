@@ -24,6 +24,7 @@ namespace ModuleHelper.ViewModels
         private ICommand _pianoCommand;
         private ICommand _clearCommand;
         private ICommand _playCommand;
+        private ICommand _stopCommand;
         private bool _isUsingScales;
         private bool _isUsingHexNotation;
         private double _arpDelayTime;
@@ -93,6 +94,24 @@ namespace ModuleHelper.ViewModels
             set
             {
                 _pianoCommand = value;
+            }
+        }
+
+        public ICommand StopCommand
+        {
+            get
+            {
+                if(_stopCommand == null)
+                {
+                    _stopCommand = new RelayCommand(param => WaveformPlayer.Instance.StopPlayback());
+                }
+
+                return _stopCommand;
+            }
+
+            set
+            {
+                _stopCommand = value;
             }
         }
         
