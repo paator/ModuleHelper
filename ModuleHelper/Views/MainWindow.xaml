@@ -28,10 +28,12 @@
             <Setter Property="FontSize" Value="12"/>
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Button.Background" Value="#FFE6E6FF" />
+                    <Setter Property="Button.Background" Value="#9575cd"/>
+                    <Setter Property="Button.BorderBrush" Value="#9575cd"/>
+                    <Setter Property="Button.Foreground" Value="White"/>
                     <Setter Property="Button.Effect">
                         <Setter.Value>
-                            <DropShadowEffect Color="Black" Direction="320" ShadowDepth="0" BlurRadius="0" Opacity="0" />
+                            <DropShadowEffect Color="#65499c" Direction="320" ShadowDepth="0" BlurRadius="0" Opacity="0" />
                         </Setter.Value>
                     </Setter>
                 </Trigger>
@@ -47,6 +49,17 @@
             <Setter Property="Command" Value="{Binding PianoCommand}"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="FontSize" Value="10"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Button.Background" Value="#65499c"/>
+                    <Setter Property="Button.BorderBrush" Value="#65499c"/>
+                    <Setter Property="Button.Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="#4d2c91" Direction="320" ShadowDepth="0" BlurRadius="0" Opacity="0" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Button}" x:Key="UtilityButton" BasedOn="{StaticResource MaterialDesignRaisedDarkButton}">
             <Setter Property="Height" Value="24"/>
@@ -129,50 +142,52 @@
         <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="Create a chord using piano keyboard:"/>
 
         <!-- Piano used for chord selection-->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3">
-            <!-- Octave 1 -->
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="C4" CommandParameter="0"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="C#4" CommandParameter="1"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="D4" CommandParameter="2"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="D#4" CommandParameter="3"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="E4" CommandParameter="4"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="F4" CommandParameter="5"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="F#4" CommandParameter="6"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="G4" CommandParameter="7"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#4" CommandParameter="8"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A4" CommandParameter="9"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#4" CommandParameter="10"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B4" CommandParameter="11"/>
-            <!-- Octave 2 -->
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="C5" CommandParameter="12"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="C#5" CommandParameter="13"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="D5" CommandParameter="14"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="D#5" CommandParameter="15"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="E5" CommandParameter="16"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="F5" CommandParameter="17"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="F#5" CommandParameter="18"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="G5" CommandParameter="19"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#5" CommandParameter="20"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A5" CommandParameter="21"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#5" CommandParameter="22"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B5" CommandParameter="23"/>
-        </StackPanel>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" Name="Piano">
+            <StackPanel Orientation="Horizontal">
+                <!-- Octave 1 -->
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="C4" CommandParameter="0"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="C#4" CommandParameter="1"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="D4" CommandParameter="2"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="D#4" CommandParameter="3"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="E4" CommandParameter="4"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="F4" CommandParameter="5"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="F#4" CommandParameter="6"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="G4" CommandParameter="7"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#4" CommandParameter="8"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A4" CommandParameter="9"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#4" CommandParameter="10"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B4" CommandParameter="11"/>
+                <!-- Octave 2 -->
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="C5" CommandParameter="12"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="C#5" CommandParameter="13"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="D5" CommandParameter="14"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="D#5" CommandParameter="15"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="E5" CommandParameter="16"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="F5" CommandParameter="17"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="F#5" CommandParameter="18"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="G5" CommandParameter="19"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#5" CommandParameter="20"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A5" CommandParameter="21"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#5" CommandParameter="22"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B5" CommandParameter="23"/>
+            </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3">
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="C6" CommandParameter="24"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="C#6" CommandParameter="25"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="D6" CommandParameter="26"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="D#6" CommandParameter="27"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="E6" CommandParameter="28"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="F6" CommandParameter="29"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="F#6" CommandParameter="30"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="G6" CommandParameter="31"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#6" CommandParameter="32"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A6" CommandParameter="33"/>
-            <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#6" CommandParameter="34"/>
-            <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B6" CommandParameter="34"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!-- Octave 3 -->
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="C6" CommandParameter="24"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="C#6" CommandParameter="25"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="D6" CommandParameter="26"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="D#6" CommandParameter="27"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="E6" CommandParameter="28"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="F6" CommandParameter="29"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="F#6" CommandParameter="30"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="G6" CommandParameter="31"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="G#6" CommandParameter="32"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="A6" CommandParameter="33"/>
+                <ToggleButton Style="{StaticResource BlackPianoKey}" Content="A#6" CommandParameter="34"/>
+                <ToggleButton Style="{StaticResource WhitePianoKey}" Content="B6" CommandParameter="34"/>
+            </StackPanel>
         </StackPanel>
-
         <!-- Chord display -->
         <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="Enter arpeggio for specified chord in your tracker:"/>
         <ItemsControl Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" ItemsSource="{Binding CurrentKeyDifferences}">
@@ -195,7 +210,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="3" Grid.Row="8" Margin="5,10">
             <Button Content="Play" Style="{StaticResource UtilityButton}" Command="{Binding PlayCommand}"/>
-            <Button Content="Clear" Style="{StaticResource UtilityButton}" Command="{Binding ClearCommand}"/>
+            <Button Content="Clear" Style="{StaticResource UtilityButton}" Command="{Binding ClearCommand}" Click="Clear_Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -5,13 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 using ModuleHelper.ViewModels;
 
 namespace ModuleHelper.Views
@@ -25,6 +19,23 @@ namespace ModuleHelper.Views
         {
             DataContext = new MainWindowViewModel();
             InitializeComponent();
+        }
+
+        private void Clear_Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(var panel in Piano.Children)
+            {
+                if(panel is StackPanel stackPanel)
+                {
+                    foreach(var key in stackPanel.Children)
+                    {
+                        if (key is ToggleButton toggleButton)
+                        {
+                            toggleButton.IsChecked = false;
+                        }
+                    }
+                }
+            }
         }
     }
 }
