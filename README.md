@@ -2,7 +2,7 @@
 Windows Presentation Foundation application that helps writing music in old tracker software.
 <br />
 
-![image](https://user-images.githubusercontent.com/47994455/91340968-200f1400-e7d9-11ea-9c77-4de61121d259.png)
+![image](https://user-images.githubusercontent.com/47994455/91736709-633cfe80-ebae-11ea-853d-0d9649ec72f5.png)
 ## Currently supported features
 - Quick access to various musical scales that can be manually added via xml file
 - Building chords (arpeggios) on 3 piano octaves
