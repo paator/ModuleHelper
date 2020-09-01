@@ -15,8 +15,11 @@ Windows Presentation Foundation application that helps writing music in old trac
 ## Requirements
 - .NET Core 3.1 Runtime
 ## Usage:
-Compile with:
+Download newest release [there](https://github.com/paator/ModuleHelper/releases/tag/v1.0). Be sure to install proper .NET Core 3.1 runtime - x64 or x32, depending on downloaded build (and your system version).
+In order to modify musical scales used by program edit musicalscales.xml. Be sure to use proper tree structure and valid XML syntax.
+
+If you want to compile the source code, run
 ```
 dotnet build
 ```
-In order to modify musical scales used by program edit musicalscales.xml file. Be sure to use proper tree structure and valid XML syntax.
+in project's root folder.
