@@ -26,7 +26,7 @@ namespace ModuleHelper.ViewModels
         private ICommand _playCommand;
         private ICommand _stopCommand;
         private bool _isUsingScales;
-        private bool _isUsingHexNotation;
+        private bool _isUsingHexNotation = true;
         private double _arpDelayTime;
         private const double _maximumArpDelayTime = 0.21;
         private const double _minimumArpDelayTime = 0.05;
