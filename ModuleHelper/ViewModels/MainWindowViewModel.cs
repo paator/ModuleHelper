@@ -10,12 +10,14 @@ using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
 using System.Windows;
 using ModuleHelper.Utility;
+using System.IO;
 
 namespace ModuleHelper.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         #region fields  
+        private IDialogService _dialogService;
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private ObservableCollection<string> _currentKeyDifferences;
         private List<int> _pressedKeysNumbers;
@@ -245,8 +247,9 @@ namespace ModuleHelper.ViewModels
         #endregion properties
 
         #region constructor
-        public MainWindowViewModel()
+        public MainWindowViewModel(IDialogService dialogService)
         {
+            _dialogService = dialogService;
             _musicalScales = new ObservableCollection<MusicalScaleModel>();
             _pressedKeysNumbers = new List<int>();
             _currentKeyDifferences = new ObservableCollection<string>();
@@ -257,7 +260,7 @@ namespace ModuleHelper.ViewModels
                 Notes = new ObservableCollection<Note>()
             };
 
-            LoadScalesFromXml("musicalscales.xml");
+            LoadScalesFromXml("Folder/musicalscales.xml");
         }
         #endregion constructor
 
@@ -363,6 +366,12 @@ namespace ModuleHelper.ViewModels
 
         public void LoadScalesFromXml(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                _dialogService.ShowMessage("XML configuration file does not exist at specified location!\nPlease place it in the same folder as .exe file.");
+                return;
+            }
+
             XmlDocument document = new XmlDocument(); 
 
             document.Load(filePath);

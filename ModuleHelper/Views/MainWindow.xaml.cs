@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using ModuleHelper.Utility;
 using ModuleHelper.ViewModels;
 
 namespace ModuleHelper.Views
@@ -17,7 +18,7 @@ namespace ModuleHelper.Views
     {
         public MainWindow()
         {
-            DataContext = new MainWindowViewModel();
+            DataContext = new MainWindowViewModel(new MessageBoxDialogService());
             InitializeComponent();
         }
 
