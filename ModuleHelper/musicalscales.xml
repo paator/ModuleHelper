@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <MusicalScales>
     <MusicalScale name="Major">
-	<Note>C</Note>
+	      <Note>C</Note>
         <Note>D</Note>
         <Note>E</Note>
         <Note>F</Note>
@@ -10,17 +10,17 @@
         <Note>B</Note>
     </MusicalScale>
     <MusicalScale name="Major Bebop">
-	<Note>C</Note>
+	      <Note>C</Note>
         <Note>D</Note>
         <Note>E</Note>
         <Note>F</Note>
         <Note>G</Note>
         <Note>Gsharp</Note>
         <Note>A</Note>
-	<Note>B</Note>
+	      <Note>B</Note>
     </MusicalScale>
     <MusicalScale name="Major Pentatonic">
-	<Note>C</Note>
+	      <Note>C</Note>
         <Note>D</Note>
         <Note>E</Note>
         <Note>G</Note>
@@ -87,7 +87,7 @@
         <Note>Asharp</Note>
     </MusicalScale>
     <MusicalScale name="Arabic">
-	<Note>C</Note>
+	      <Note>C</Note>
         <Note>Csharp</Note>
         <Note>E</Note>
         <Note>F</Note>
@@ -96,17 +96,17 @@
         <Note>B</Note>
     </MusicalScale>
     <MusicalScale name="Diminished">
-	<Note>C</Note>
+	      <Note>C</Note>
         <Note>D</Note>
         <Note>Dsharp</Note>
         <Note>F</Note>
         <Note>Fsharp</Note>
         <Note>Gsharp</Note>
         <Note>A</Note>
-	<Note>B</Note>
+	      <Note>B</Note>
     </MusicalScale>
     <MusicalScale name="Phygrian">
-	<Note>C</Note>
+	      <Note>C</Note>
         <Note>Csharp</Note>
         <Note>Dsharp</Note>
         <Note>F</Note>

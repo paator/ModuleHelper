@@ -260,7 +260,7 @@ namespace ModuleHelper.ViewModels
                 Notes = new ObservableCollection<Note>()
             };
 
-            LoadScalesFromXml("Folder/musicalscales.xml");
+            LoadScalesFromXml("musicalscales.xml");
         }
         #endregion constructor
 
