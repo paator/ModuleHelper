@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ModuleHelper.Models
+namespace ModuleHelper.Utility
 {
     public interface IDialogService
     {

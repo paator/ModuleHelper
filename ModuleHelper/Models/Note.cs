@@ -1,4 +1,4 @@
-﻿namespace ModuleHelper.ViewModels
+﻿namespace ModuleHelper.Models
 {
     public enum Note
     {
