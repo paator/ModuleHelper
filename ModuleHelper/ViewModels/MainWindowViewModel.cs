@@ -14,7 +14,7 @@ using System.IO;
 
 namespace ModuleHelper.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : ViewModel
     {
         #region fields  
         private IDialogService _dialogService;
@@ -457,12 +457,5 @@ namespace ModuleHelper.ViewModels
             return (x % m + m) % m;
         }
         #endregion methods
-
-        protected virtual void OnPropertyChange(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
