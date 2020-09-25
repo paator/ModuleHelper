@@ -17,12 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="musicalscales.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="NAudio" Version="1.10.0" />
   </ItemGroup>

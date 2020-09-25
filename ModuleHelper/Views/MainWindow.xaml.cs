@@ -18,7 +18,10 @@ namespace ModuleHelper.Views
     {
         public MainWindow()
         {
-            DataContext = new MainWindowViewModel(new MessageBoxDialogService());
+            IMusicalScalesProvider scalesProvider = new XMLMusicalScalesProvider();
+            IDialogService dialogService = new MessageBoxDialogService();
+
+            DataContext = new MainWindowViewModel("musicalscales.xml", dialogService, scalesProvider);
             InitializeComponent();
         }
 

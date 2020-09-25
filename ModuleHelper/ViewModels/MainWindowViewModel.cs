@@ -18,6 +18,9 @@ namespace ModuleHelper.ViewModels
     {
         #region fields  
         private IDialogService _dialogService;
+        private IMusicalScalesProvider _scalesProvider;
+        //private IArpeggioPlayer _arpeggioPlayer;
+
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private ObservableCollection<string> _currentKeyDifferences;
         private List<int> _pressedKeysNumbers;
@@ -247,10 +250,14 @@ namespace ModuleHelper.ViewModels
         #endregion properties
 
         #region constructor
-        public MainWindowViewModel(IDialogService dialogService)
+        public MainWindowViewModel(string musicalScalesFile, IDialogService dialogService, IMusicalScalesProvider scalesProvider)
         {
             _dialogService = dialogService;
-            _musicalScales = new ObservableCollection<MusicalScaleModel>();
+            _scalesProvider = scalesProvider;
+
+            IEnumerable<MusicalScaleModel> loadedMusicalScales = LoadMusicalScales("musicalscales.xml");
+
+            _musicalScales = new ObservableCollection<MusicalScaleModel>(loadedMusicalScales);
             _pressedKeysNumbers = new List<int>();
             _currentKeyDifferences = new ObservableCollection<string>();
             _arpDelayTime = _minimumArpDelayTime;
@@ -259,10 +266,30 @@ namespace ModuleHelper.ViewModels
                 Name = default,
                 Notes = new ObservableCollection<Note>()
             };
-
-            LoadScalesFromXml("musicalscales.xml");
         }
         #endregion constructor
+
+        public IEnumerable<MusicalScaleModel> LoadMusicalScales(string source)
+        {
+            IEnumerable<MusicalScaleModel> scales = new ObservableCollection<MusicalScaleModel>();
+
+            try
+            {
+                scales = _scalesProvider.LoadScales(source);
+            }
+            catch (FileNotFoundException e)
+            {
+                _dialogService.ShowMessage(e.Message);
+                Environment.Exit(-1);
+            }
+            catch(FileLoadException e)
+            {
+                _dialogService.ShowMessage(e.Message);
+                Environment.Exit(-2);
+            }
+
+            return scales;
+        }
 
         #region methods
         public void CalculateDistanceBetweenKeys(object param)
@@ -300,7 +327,7 @@ namespace ModuleHelper.ViewModels
             var squareWave = new SignalGenerator()
             {
                 Gain = 0.12,
-                Frequency = CalculateFrequency(int.Parse((string)param)),
+                Frequency = MathUtils.CalculateFrequency(int.Parse((string)param)),
                 Type = SignalGeneratorType.Square
             };
 
@@ -323,7 +350,7 @@ namespace ModuleHelper.ViewModels
                     var squareWave = new SignalGenerator()
                     {
                         Gain = 0.12,
-                        Frequency = CalculateFrequency(num),
+                        Frequency = MathUtils.CalculateFrequency(num),
                         Type = SignalGeneratorType.Square
                     };
 
@@ -353,7 +380,7 @@ namespace ModuleHelper.ViewModels
             else if (param is string s)
             {
                 var number = int.Parse(s);
-                return CurrentMusicalScaleNotes.Any(note => Modulo(number, 12) == (int)note);
+                return CurrentMusicalScaleNotes.Any(note => MathUtils.Modulo(number, 12) == (int)note);
             }
             else return false;
         }
@@ -362,46 +389,6 @@ namespace ModuleHelper.ViewModels
         {
             _pressedKeysNumbers.Clear();
             CurrentKeyDifferences.Clear();
-        }
-
-        public void LoadScalesFromXml(string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                _dialogService.ShowMessage("XML configuration file does not exist at specified location!\nPlease place it in the same folder as .exe file.");
-                return;
-            }
-
-            XmlDocument document = new XmlDocument(); 
-
-            document.Load(filePath);
-
-            XmlNodeList nodes = document.DocumentElement.SelectNodes("/MusicalScales/MusicalScale");
-
-            _musicalScales = new ObservableCollection<MusicalScaleModel>();
-
-            foreach(XmlNode node in nodes)
-            {
-                //create new musicalscale of name set in xml node attribute
-                var musicalScale = new MusicalScaleModel
-                {
-                    Name = node.Attributes["name"].Value,
-                    Notes = new ObservableCollection<Note>()
-                };
-
-                //fill musical scale with notes from xml file
-                var musicalNotesOfScale = node.ChildNodes;
-
-                foreach (XmlNode note in musicalNotesOfScale)
-                {
-                    var musicalScaleNote = note.InnerText;
-                    var parsedNoteValue = (Note) Enum.Parse(typeof(Note), musicalScaleNote);
-
-                    musicalScale.Notes.Add(parsedNoteValue);
-                }
-
-                MusicalScales.Add(musicalScale);
-            }
         }
 
         public void ChangeNotesRelativeToKey(Note previouslySelectedNote)
@@ -424,18 +411,11 @@ namespace ModuleHelper.ViewModels
 
                 //12 -> back to C note, just higher octave
                 //0 -> back to B note, just lower octave
-                newNoteIntValue = Modulo(newNoteIntValue, 12);
+                newNoteIntValue = MathUtils.Modulo(newNoteIntValue, 12);
 
                 Note newNote = (Note)newNoteIntValue;
                 CurrentMusicalScaleNotes[i] = newNote;
             }
-        }
-        public static double CalculateFrequency(int n)
-        {
-            var freq = 440.0 * Math.Pow(2.0, (n - 49.0) / 12.0);
-
-            //we're starting from 4th octave
-            return freq * 4;
         }
 
         public void SwitchBetweenHexAndDec()
@@ -450,11 +430,6 @@ namespace ModuleHelper.ViewModels
                 var enumeration = CurrentKeyDifferences.Select(x => Convert.ToInt64(x, 16).ToString());
                 CurrentKeyDifferences = new ObservableCollection<string>(enumeration);
             }
-        }
-
-        public static int Modulo(int x, int m)
-        {
-            return (x % m + m) % m;
         }
         #endregion methods
     }
