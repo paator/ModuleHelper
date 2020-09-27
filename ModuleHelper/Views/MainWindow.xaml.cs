@@ -20,8 +20,9 @@ namespace ModuleHelper.Views
         {
             IMusicalScalesProvider scalesProvider = new XMLMusicalScalesProvider();
             IDialogService dialogService = new MessageBoxDialogService();
+            ISoundEngine soundEngine = new ChiptuneEngine();
 
-            DataContext = new MainWindowViewModel("musicalscales.xml", dialogService, scalesProvider);
+            DataContext = new MainWindowViewModel("musicalscales.xml", dialogService, scalesProvider, soundEngine);
             InitializeComponent();
         }
 

@@ -11,6 +11,7 @@ using NAudio.Wave;
 using System.Windows;
 using ModuleHelper.Utility;
 using System.IO;
+using ModuleHelper.Extensions;
 
 namespace ModuleHelper.ViewModels
 {
@@ -19,7 +20,7 @@ namespace ModuleHelper.ViewModels
         #region fields  
         private IDialogService _dialogService;
         private IMusicalScalesProvider _scalesProvider;
-        //private IArpeggioPlayer _arpeggioPlayer;
+        private ISoundEngine _soundEngine;
 
         private ObservableCollection<MusicalScaleModel> _musicalScales;
         private ObservableCollection<string> _currentKeyDifferences;
@@ -90,7 +91,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_pianoCommand == null)
                 {
-                    _pianoCommand = new RelayCommand(param => CalculateDistanceBetweenKeys(param), param => CheckIfKeyIsInScale(param));
+                    _pianoCommand = new RelayCommand(param => PianoCommandExecute(param), param => PianoCommandCanExecute(param));
                 }
 
                 return _pianoCommand;
@@ -144,7 +145,7 @@ namespace ModuleHelper.ViewModels
             {
                 if (_playCommand == null)
                 {
-                    _playCommand = new RelayCommand(param => PlayArpeggio(_pressedKeysNumbers, 3));
+                    _playCommand = new RelayCommand(param => PlayExecute(_pressedKeysNumbers));
                 }
 
                 return _playCommand;
@@ -248,14 +249,13 @@ namespace ModuleHelper.ViewModels
             }
         }
         #endregion properties
-
-        #region constructor
-        public MainWindowViewModel(string musicalScalesFile, IDialogService dialogService, IMusicalScalesProvider scalesProvider)
+        public MainWindowViewModel(string musicalScalesFile, IDialogService dialogService, IMusicalScalesProvider scalesProvider, ISoundEngine soundEngine)
         {
             _dialogService = dialogService;
             _scalesProvider = scalesProvider;
+            _soundEngine = soundEngine;
 
-            IEnumerable<MusicalScaleModel> loadedMusicalScales = LoadMusicalScales("musicalscales.xml");
+            IEnumerable<MusicalScaleModel> loadedMusicalScales = LoadMusicalScales(musicalScalesFile);
 
             _musicalScales = new ObservableCollection<MusicalScaleModel>(loadedMusicalScales);
             _pressedKeysNumbers = new List<int>();
@@ -267,7 +267,6 @@ namespace ModuleHelper.ViewModels
                 Notes = new ObservableCollection<Note>()
             };
         }
-        #endregion constructor
 
         public IEnumerable<MusicalScaleModel> LoadMusicalScales(string source)
         {
@@ -282,7 +281,7 @@ namespace ModuleHelper.ViewModels
                 _dialogService.ShowMessage(e.Message);
                 Environment.Exit(-1);
             }
-            catch(FileLoadException e)
+            catch (FileLoadException e)
             {
                 _dialogService.ShowMessage(e.Message);
                 Environment.Exit(-2);
@@ -292,9 +291,10 @@ namespace ModuleHelper.ViewModels
         }
 
         #region methods
-        public void CalculateDistanceBetweenKeys(object param)
+        public void PianoCommandExecute(object param)
         {
             CurrentKeyDifferences.Clear();
+
             if (param is string s)
             {
                 var number = int.Parse(s);
@@ -306,83 +306,30 @@ namespace ModuleHelper.ViewModels
                 {
                     _pressedKeysNumbers.Add(number);
                 }
+
+                _soundEngine.PlayKey(number);
             }
 
-            _pressedKeysNumbers.Sort();
+            var differences = MathMusicalUtilities.CalculateKeyDifferences(_pressedKeysNumbers);
 
-            for (int i = 0; i < _pressedKeysNumbers.Count(); i++)
-            {
-                int difference = _pressedKeysNumbers[i] - _pressedKeysNumbers[0];
-
-                if(_isUsingHexNotation)
-                {
-                    CurrentKeyDifferences.Add(difference.ToString("X"));
-                }
-                else
-                {
-                    CurrentKeyDifferences.Add(difference.ToString());
-                }
-            }
-
-            var squareWave = new SignalGenerator()
-            {
-                Gain = 0.12,
-                Frequency = MathUtils.CalculateFrequency(int.Parse((string)param)),
-                Type = SignalGeneratorType.Square
-            };
-
-            var trimmed = new OffsetSampleProvider(squareWave);
-            var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(0.4));
-
-            WaveformPlayer.Instance.PlayWaveform(trimmedWithTimeSpan);
+            CurrentKeyDifferences = differences.ToStringHex(_isUsingHexNotation);
         }
 
-        public void PlayArpeggio(IEnumerable<int> chordKeyNumbers, int length)
+        public bool PianoCommandCanExecute(object param)
         {
-            if (!chordKeyNumbers.Any()) return;
-
-            List<ISampleProvider> arpeggioInputs = new List<ISampleProvider>();
-
-            for (int i = 0; i <= length; i++)
+            if (param is string s)
             {
-                foreach (var num in chordKeyNumbers)
-                {
-                    var squareWave = new SignalGenerator()
-                    {
-                        Gain = 0.12,
-                        Frequency = MathUtils.CalculateFrequency(num),
-                        Type = SignalGeneratorType.Square
-                    };
-
-                    var trimmed = new OffsetSampleProvider(squareWave);
-                    var trimmedWithTimeSpan = trimmed.Take(TimeSpan.FromSeconds(_maximumArpDelayTime - _arpDelayTime));
-                    arpeggioInputs.Add(trimmedWithTimeSpan);
-                }
+                var keyNumber = int.Parse(s);
+                return MathMusicalUtilities.CheckIfKeyIsInScale(_isUsingScales, keyNumber, CurrentMusicalScaleNotes);
             }
 
-            var concatenatedWaveforms = arpeggioInputs[0];
-
-            foreach (var input in arpeggioInputs.Skip(1)) 
-            {
-                concatenatedWaveforms = concatenatedWaveforms.FollowedBy(input);
-            }
-
-            WaveformPlayer.Instance.StopPlayback();
-            WaveformPlayer.Instance.PlayWaveform(concatenatedWaveforms);
-        }
-
-        public bool CheckIfKeyIsInScale(object param)
-        {
-            if(!_isUsingScales)
-            {
-                return true;
-            }
-            else if (param is string s)
-            {
-                var number = int.Parse(s);
-                return CurrentMusicalScaleNotes.Any(note => MathUtils.Modulo(number, 12) == (int)note);
-            }
             else return false;
+        }
+
+        public void PlayExecute(IEnumerable<int> pressedKeysNumbers)
+        {
+            var speed = _maximumArpDelayTime - _arpDelayTime;
+            _soundEngine.PlayArpeggio(pressedKeysNumbers, 3, speed);
         }
 
         public void ClearChord()
@@ -411,7 +358,7 @@ namespace ModuleHelper.ViewModels
 
                 //12 -> back to C note, just higher octave
                 //0 -> back to B note, just lower octave
-                newNoteIntValue = MathUtils.Modulo(newNoteIntValue, 12);
+                newNoteIntValue = MathMusicalUtilities.Modulo(newNoteIntValue, 12);
 
                 Note newNote = (Note)newNoteIntValue;
                 CurrentMusicalScaleNotes[i] = newNote;
@@ -420,16 +367,7 @@ namespace ModuleHelper.ViewModels
 
         public void SwitchBetweenHexAndDec()
         {
-            if (_isUsingHexNotation)
-            {
-                var enumeration = CurrentKeyDifferences.Select(x => int.Parse(x).ToString("X"));
-                CurrentKeyDifferences = new ObservableCollection<string>(enumeration);
-            }
-            else
-            {
-                var enumeration = CurrentKeyDifferences.Select(x => Convert.ToInt64(x, 16).ToString());
-                CurrentKeyDifferences = new ObservableCollection<string>(enumeration);
-            }
+            CurrentKeyDifferences.SwitchBetweenHexAndDec(_isUsingHexNotation);
         }
         #endregion methods
     }
