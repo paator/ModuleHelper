@@ -6,9 +6,9 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Utils
 {
-    public class XMLMusicalScalesProvider : IMusicalScalesProvider
+    public class MusicalScalesProvider : IMusicalScalesProvider
     {
         public IEnumerable<MusicalScaleModel> LoadScales(string source)
         {
@@ -22,14 +22,12 @@ namespace ModuleHelper.Utility
 
             foreach (XmlNode node in nodes)
             {
-                //create new musicalscale of name set in xml node attribute
                 var musicalScale = new MusicalScaleModel
                 {
                     Name = node.Attributes["name"].Value,
                     Notes = new ObservableCollection<Note>()
                 };
 
-                //fill musical scale with notes from xml file
                 var musicalNotesOfScale = node.ChildNodes;
 
                 foreach (XmlNode note in musicalNotesOfScale)

@@ -1,13 +1,14 @@
-﻿using NAudio.Wave;
+﻿using ModuleHelper.Utils;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Services
 {
-    public class ChiptuneEngine : ISoundEngine
+    public class SoundEngine : ISoundEngine
     {
         public ISampleProvider ConnectSamples(IList<ISampleProvider> samples)
         {
@@ -36,7 +37,7 @@ namespace ModuleHelper.Utility
                     var squareWave = new SignalGenerator()
                     {
                         Gain = 0.12,
-                        Frequency = MathMusicalUtilities.CalculateFrequency(num, 4),
+                        Frequency = MusicalMathHelper.CalculateFrequency(num, 4),
                         Type = SignalGeneratorType.Square
                     };
 
@@ -54,7 +55,7 @@ namespace ModuleHelper.Utility
             var squareWave = new SignalGenerator()
             {
                 Gain = 0.12,
-                Frequency = MathMusicalUtilities.CalculateFrequency(keyNumber, 4),
+                Frequency = MusicalMathHelper.CalculateFrequency(keyNumber, 4),
                 Type = SignalGeneratorType.Square
             };
 

@@ -4,7 +4,7 @@ using System.Text;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Utils
 {
     public class WaveformPlayer : IDisposable
     {

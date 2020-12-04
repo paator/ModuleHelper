@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Utils
 {
     public interface IMusicalScalesProvider
     {
-        public IEnumerable<MusicalScaleModel> LoadScales(string source);
+        IEnumerable<MusicalScaleModel> LoadScales(string source);
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Services
 {
     public interface IDialogService
     {
-        public void ShowMessage(string message);
+        void ShowMessage(string message);
     }
 }

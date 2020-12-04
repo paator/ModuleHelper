@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using ModuleHelper.Utility;
+using ModuleHelper.Services;
+using ModuleHelper.Utils;
 using ModuleHelper.ViewModels;
 
 namespace ModuleHelper.Views
@@ -18,9 +19,9 @@ namespace ModuleHelper.Views
     {
         public MainWindow()
         {
-            IMusicalScalesProvider scalesProvider = new XMLMusicalScalesProvider();
-            IDialogService dialogService = new MessageBoxDialogService();
-            ISoundEngine soundEngine = new ChiptuneEngine();
+            IMusicalScalesProvider scalesProvider = new MusicalScalesProvider();
+            IDialogService dialogService = new DialogService();
+            ISoundEngine soundEngine = new SoundEngine();
 
             DataContext = new MainWindowViewModel("musicalscales.xml", dialogService, scalesProvider, soundEngine);
             InitializeComponent();

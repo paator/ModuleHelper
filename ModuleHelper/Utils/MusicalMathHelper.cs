@@ -6,9 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Utils
 {
-    public static class MathMusicalUtilities
+    public static class MusicalMathHelper
     {
         public static double CalculateFrequency(int n, int startOctave)
         {

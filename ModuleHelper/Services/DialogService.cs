@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 
-namespace ModuleHelper.Utility
+namespace ModuleHelper.Services
 {
-    public class MessageBoxDialogService : IDialogService
+    public class DialogService : IDialogService
     {
         public void ShowMessage(string message)
         {

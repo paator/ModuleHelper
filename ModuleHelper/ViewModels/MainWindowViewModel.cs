@@ -9,9 +9,10 @@ using System.Windows.Input;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
 using System.Windows;
-using ModuleHelper.Utility;
+using ModuleHelper.Utils;
 using System.IO;
 using ModuleHelper.Extensions;
+using ModuleHelper.Services;
 
 namespace ModuleHelper.ViewModels
 {
@@ -310,7 +311,7 @@ namespace ModuleHelper.ViewModels
                 _soundEngine.PlayKey(number);
             }
 
-            var differences = MathMusicalUtilities.CalculateKeyDifferences(_pressedKeysNumbers);
+            var differences = MusicalMathHelper.CalculateKeyDifferences(_pressedKeysNumbers);
 
             CurrentKeyDifferences = differences.ToStringHex(_isUsingHexNotation);
         }
@@ -320,7 +321,7 @@ namespace ModuleHelper.ViewModels
             if (param is string s)
             {
                 var keyNumber = int.Parse(s);
-                return MathMusicalUtilities.CheckIfKeyIsInScale(_isUsingScales, keyNumber, CurrentMusicalScaleNotes);
+                return MusicalMathHelper.CheckIfKeyIsInScale(_isUsingScales, keyNumber, CurrentMusicalScaleNotes);
             }
 
             else return false;
@@ -358,7 +359,7 @@ namespace ModuleHelper.ViewModels
 
                 //12 -> back to C note, just higher octave
                 //0 -> back to B note, just lower octave
-                newNoteIntValue = MathMusicalUtilities.Modulo(newNoteIntValue, 12);
+                newNoteIntValue = MusicalMathHelper.Modulo(newNoteIntValue, 12);
 
                 Note newNote = (Note)newNoteIntValue;
                 CurrentMusicalScaleNotes[i] = newNote;
