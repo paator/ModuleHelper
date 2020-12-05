@@ -13,6 +13,7 @@ using ModuleHelper.Utils;
 using System.IO;
 using ModuleHelper.Extensions;
 using ModuleHelper.Services;
+using ModuleHelper.Helpers;
 
 namespace ModuleHelper.ViewModels
 {

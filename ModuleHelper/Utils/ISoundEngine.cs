@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ModuleHelper.Services
+namespace ModuleHelper.Utils
 {
     public interface ISoundEngine
     {

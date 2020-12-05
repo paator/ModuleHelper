@@ -2,11 +2,12 @@
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
+using ModuleHelper.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModuleHelper.Services
+namespace ModuleHelper.Utils
 {
     public class SoundEngine : ISoundEngine
     {
