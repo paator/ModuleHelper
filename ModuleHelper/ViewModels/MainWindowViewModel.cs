@@ -41,7 +41,7 @@ namespace ModuleHelper.ViewModels
         #endregion fields  
 
         #region properties
-        public Array Notes { get => Enum.GetValues(typeof(Note)); }
+        public Array Notes => Enum.GetValues(typeof(Note));
 
         public bool IsUsingHexNotation
         {
@@ -53,7 +53,7 @@ namespace ModuleHelper.ViewModels
                 {
                     
                     _isUsingHexNotation = value;
-                    OnPropertyChange("IsUsingHexNotation");
+                    OnPropertyChange(nameof(IsUsingHexNotation));
                     SwitchBetweenHexAndDec();
                 }
             }
@@ -68,7 +68,7 @@ namespace ModuleHelper.ViewModels
                 if(_isUsingScales != value)
                 {
                     _isUsingScales = value;
-                    OnPropertyChange("IsUsingScales");
+                    OnPropertyChange(nameof(IsUsingScales));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace ModuleHelper.ViewModels
                 if (_arpDelayTime != value)
                 {
                     _arpDelayTime = value;
-                    OnPropertyChange("ArpDelayTime");
+                    OnPropertyChange(nameof(ArpDelayTime));
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace ModuleHelper.ViewModels
                 if(_musicalScales != value)
                 {
                     _musicalScales = value;
-                    OnPropertyChange("MusicalScales");
+                    OnPropertyChange(nameof(MusicalScales));
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace ModuleHelper.ViewModels
                 if(_currentKeyDifferences != value)
                 {
                     _currentKeyDifferences = value;
-                    OnPropertyChange("CurrentKeyDifferences");
+                    OnPropertyChange(nameof(CurrentKeyDifferences));
                 }
             }
         }
@@ -199,13 +199,11 @@ namespace ModuleHelper.ViewModels
                 {
                     _currentMusicalScale = value;
 
-                    //fixing position of keys relative to main key when selecting new scale
                     ChangeNotesRelativeToKey(CurrentMusicalScaleNotes[0]); 
 
-                    //updating current scale's name and notes as well
-                    OnPropertyChange("CurrentMusicalScale");
-                    OnPropertyChange("CurrentMusicalScaleName");
-                    OnPropertyChange("CurrentMusicalScaleNotes");
+                    OnPropertyChange(nameof(CurrentMusicalScale));
+                    OnPropertyChange(nameof(CurrentMusicalScaleName));
+                    OnPropertyChange(nameof(CurrentMusicalScaleNotes));
                 }
             }
         }
@@ -218,7 +216,7 @@ namespace ModuleHelper.ViewModels
                 if (_currentMusicalScale.Name != value)
                 {
                     _currentMusicalScale.Name = value;
-                    OnPropertyChange("CurrentMusicalScaleName");
+                    OnPropertyChange(nameof(CurrentMusicalScaleName));
                 }
             }
         }
@@ -231,7 +229,7 @@ namespace ModuleHelper.ViewModels
                 if(_currentMusicalScale.Notes != value)
                 {
                     _currentMusicalScale.Notes = value;
-                    OnPropertyChange("CurrentMusicalScaleNotes"); 
+                    OnPropertyChange(nameof(CurrentMusicalScaleNotes)); 
                 }
             }
         }
@@ -246,7 +244,7 @@ namespace ModuleHelper.ViewModels
                     var previouslySelectedNote = _currentNote;
                     _currentNote = value;
                     ChangeNotesRelativeToKey(previouslySelectedNote);
-                    OnPropertyChange("CurrentNote");
+                    OnPropertyChange(nameof(CurrentNote));
                 }
             }
         }
